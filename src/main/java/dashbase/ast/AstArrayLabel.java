@@ -9,5 +9,4 @@ public class AstArrayLabel extends QueryAstList {
     public AstArrayLabel(List<AstNode> children) {
         super(children, Tokens.AST_ARRAY_LABEL);
     }
-
 }

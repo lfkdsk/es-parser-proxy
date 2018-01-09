@@ -2,10 +2,11 @@ package dashbase.ast;
 
 import com.lfkdsk.justel.ast.base.AstList;
 import com.lfkdsk.justel.ast.base.AstNode;
+import dashbase.visitor.VisitorBinder;
 
 import java.util.List;
 
-public class QueryAstList extends AstList {
+public class QueryAstList extends AstList implements VisitorBinder<String> {
 
 
     public QueryAstList(List<AstNode> children, int tag) {
