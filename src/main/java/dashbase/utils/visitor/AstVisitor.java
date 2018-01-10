@@ -1,4 +1,4 @@
-package dashbase.visitor;
+package dashbase.utils.visitor;
 
 import dashbase.ast.*;
 

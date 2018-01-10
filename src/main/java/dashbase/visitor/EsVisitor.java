@@ -1,6 +1,7 @@
 package dashbase.visitor;
 
 import dashbase.ast.*;
+import dashbase.utils.visitor.AstVisitor;
 
 public class EsVisitor implements AstVisitor<String> {
     @Override

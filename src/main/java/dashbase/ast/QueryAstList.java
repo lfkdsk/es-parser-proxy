@@ -2,7 +2,7 @@ package dashbase.ast;
 
 import com.lfkdsk.justel.ast.base.AstList;
 import com.lfkdsk.justel.ast.base.AstNode;
-import dashbase.visitor.VisitorBinder;
+import dashbase.utils.visitor.VisitorBinder;
 
 import java.util.List;
 

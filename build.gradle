@@ -13,4 +13,5 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.github.lfkdsk:Just-Evaluator:Just-Evaluator-20171129072336'
+    compile 'com.google.code.gson:gson:2.8.2'
 }
