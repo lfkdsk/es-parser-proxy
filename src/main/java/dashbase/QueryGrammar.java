@@ -57,7 +57,7 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     @Getter
-    private BnfCom innerLabel = rule(AstInnerLabelExpr.class).ast(string).token(":").ast(label0);
+    private BnfCom innerLabel = rule(AstInnerLabelExpr.class).ast(string).sep(":").ast(label0);
 
     ///////////////////////////////////////////////////////////////////////////
     // inner label list := innerLabel [, innerLabel] *
@@ -82,9 +82,9 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     @Getter
-    private BnfCom objectLabel = rule(AstObjectLabel.class).token("{")
+    private BnfCom objectLabel = rule(AstObjectLabel.class).sep("{")
                                                            .maybe(innerLabelList)
-                                                           .token("}");
+                                                           .sep("}");
 
     ///////////////////////////////////////////////////////////////////////////
     // array label := [
@@ -93,9 +93,9 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     @Getter
-    private BnfCom arrayLabel = rule(AstArrayLabel.class).token("[")
+    private BnfCom arrayLabel = rule(AstArrayLabel.class).sep("[")
                                                          .maybe(labelList)
-                                                         .token("]");
+                                                         .sep("]");
 
     ///////////////////////////////////////////////////////////////////////////
     // label := value | object | array
@@ -108,6 +108,40 @@ public class QueryGrammar {
             arrayLabel
     );
 
+    private BnfCom matchAll = rule().wrap("match_all").sep(":").ast(objectLabel);
+
+    private BnfCom matchNone = rule().wrap("match_none").sep(":").sep("{").sep("}");
+
+    private BnfCom match = rule().wrap("match").sep(":").sep("{").ast(innerLabel).sep("}");
+
+    private BnfCom matchQueryPhrase = rule().wrap("match_phrase").sep(":").sep("{").ast(innerLabel).sep("}");
+
+    private BnfCom matchPhrasePrefix = rule().wrap("match_phrase_prefix").sep(":").sep("{").ast(innerLabel).sep("}");
+
+    private BnfCom multiMatch = rule().wrap("multi_match").sep(":").sep("{").ast(innerLabel).sep("}");
+
+    private BnfCom boolQuery = rule().wrap("bool").sep(":").sep("{").ast(objectLabel).sep("}");
+
+    private BnfCom commonQuery = rule().wrap("common").sep(":").sep("{").ast(objectLabel).sep("}");
+
+    private BnfCom queryString = rule().wrap("query_string").sep(":").sep("{").ast(innerLabel).sep("}");
+
+    @Getter
+    private BnfCom query = rule().wrap("query").sep(":").sep("{").or(
+            match,
+            matchAll,
+            matchNone,
+            matchQueryPhrase,
+            matchPhrasePrefix,
+            multiMatch,
+            boolQuery,
+            commonQuery,
+            queryString
+    ).sep("}");
+
+    private BnfCom innerProgram = rule().maybe(query);
+
+
     ///////////////////////////////////////////////////////////////////////////
     // program = {
     //      labelList
@@ -115,7 +149,7 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     @Getter
-    private BnfCom program = rule(AstQueryProgram.class).token("{").maybe(innerLabelList).token("}").sep(EOL);
+    private BnfCom program = rule(AstQueryProgram.class).sep("{").maybe(innerProgram).sep("}").sep(EOL);
 
     public AstQueryProgram getAst(Queue<Token> tokens) {
         return (AstQueryProgram) GrammarHelper.transformAst(getProgram().parse(tokens), Tokens.labels);

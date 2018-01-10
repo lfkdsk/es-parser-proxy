@@ -11,12 +11,14 @@ import dashbase.ast.QueryAstList;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * BnfCom Engine
  *
  * @author liufengkai
- *         Created by liufengkai on 16/7/11.
+ * Created by liufengkai on 16/7/11.
  * @see AToken
  * @see Expr
  * @see Element
@@ -275,6 +277,95 @@ public class BnfCom {
         @Override
         protected boolean tokenTest(Token token) {
             return token.isType();
+        }
+    }
+
+    protected static class Rex extends Leaf {
+        String token;
+        Pattern pattern;
+
+        Rex(String pat) {
+            super(null);
+            this.token = pat;
+            this.pattern = Pattern.compile(pat);
+        }
+
+        @Override
+        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
+            Token token = lexer.poll();
+            Matcher matcher = pattern.matcher(token.getText());
+            if (matcher.find()) {
+                find(nodes, token);
+            }
+
+            if (tokens.length > 0) {
+                throw new ParseException(tokens[0] + " expected. ", token);
+            } else {
+                throw new ParseException(token);
+            }
+
+        }
+
+        @Override
+        protected void find(List<AstNode> list, Token token) {
+            super.find(list, token);
+        }
+
+        @Override
+        protected boolean match(Queue<Token> lexer) throws ParseException {
+            Token token = lexer.element();
+            Matcher matcher = pattern.matcher(token.getText());
+
+            return matcher.find();
+
+        }
+    }
+
+    protected static class WrapToken extends Leaf {
+        WrapToken(String[] pat) {
+            super(pat);
+
+            for (int i = 0; i < tokens.length; i++) {
+                String token = tokens[i];
+                tokens[i] = String.format("\"%s\"", token);
+            }
+        }
+
+        @Override
+        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
+            Token token = lexer.poll();
+
+            for (String t : tokens) {
+                if (t.equals(String.format("\"%s\"", token.getText()))) {
+                    find(nodes, token);
+                    return;
+                }
+            }
+
+            if (tokens.length > 0) {
+                throw new ParseException(tokens[0] + " expected. ", token);
+            } else {
+                throw new ParseException(token);
+            }
+
+        }
+
+        @Override
+        protected void find(List<AstNode> list, Token token) {
+            super.find(list, token);
+        }
+
+        @Override
+        protected boolean match(Queue<Token> lexer) throws ParseException {
+            Token token = lexer.element();
+
+            for (String t : tokens) {
+                if (t.equals(String.format("\"%s\"", token.getText()))) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -571,7 +662,8 @@ public class BnfCom {
                         return (AstNode) m.invoke(null, arg);
                     }
                 };
-            } catch (NoSuchMethodException ignored) { }
+            } catch (NoSuchMethodException ignored) {
+            }
 
             // call constructor
             try {
@@ -791,6 +883,11 @@ public class BnfCom {
      */
     public BnfCom repeat(BnfCom parser) {
         elements.add(new Repeat(parser, false));
+        return this;
+    }
+
+    public BnfCom wrap(String... pat) {
+        elements.add(new WrapToken(pat));
         return this;
     }
 

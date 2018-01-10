@@ -11,7 +11,7 @@ public class AstObjectLabel extends QueryAstList {
     }
 
     public List<AstNode> labels() {
-        return children.subList(1, childCount() - 1);
+        return children;
     }
 
     @Override
