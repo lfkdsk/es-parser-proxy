@@ -1,5 +1,6 @@
 package dashbase.request;
 
+import dashbase.request.query.Query;
 import dashbase.utils.GsonObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class Request implements GsonObject {
      */
     @Getter
     @Setter
-    private Query query = null;
+    private Query query;
 
     /**
      * if none specified, last 15 minutes of data is queried
@@ -39,7 +40,7 @@ public class Request implements GsonObject {
      */
     @Getter
     @Setter
-    private TimeFilter timeFilter = null;
+    private TimeFilter timeFilter;
 
 
     /**

@@ -4,11 +4,16 @@ import com.lfkdsk.justel.literal.BoolLiteral;
 import com.lfkdsk.justel.literal.IDLiteral;
 import com.lfkdsk.justel.literal.NumberLiteral;
 import com.lfkdsk.justel.literal.StringLiteral;
-import com.lfkdsk.justel.parser.BnfCom;
+import dashbase.bnf.BnfCom;
+import com.lfkdsk.justel.token.Token;
 import dashbase.ast.*;
+import dashbase.token.Tokens;
+import dashbase.utils.GrammarHelper;
 import lombok.Getter;
 
-import static com.lfkdsk.justel.parser.BnfCom.rule;
+import java.util.Queue;
+
+import static dashbase.bnf.BnfCom.rule;
 import static com.lfkdsk.justel.token.ReservedToken.reservedToken;
 import static com.lfkdsk.justel.token.Token.EOL;
 
@@ -111,4 +116,8 @@ public class QueryGrammar {
 
     @Getter
     private BnfCom program = rule(AstQueryProgram.class).token("{").maybe(innerLabelList).token("}").sep(EOL);
+
+    public AstQueryProgram getAst(Queue<Token> tokens) {
+        return (AstQueryProgram) GrammarHelper.transformAst(getProgram().parse(tokens), Tokens.labels);
+    }
 }

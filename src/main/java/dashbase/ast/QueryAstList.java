@@ -23,7 +23,6 @@ public class QueryAstList extends AstList implements VisitorBinder<String> {
 
         for (AstNode child : children) {
             builder.append(child.toString());
-            builder.append(",");
         }
 
         return builder.toString();

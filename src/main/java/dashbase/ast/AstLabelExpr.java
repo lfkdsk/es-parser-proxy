@@ -10,5 +10,8 @@ public class AstLabelExpr extends QueryAstList{
         super(children, Tokens.AST_PRIMARY_LABEL);
     }
 
-
+    @Override
+    public String toString() {
+        return child(0).toString();
+    }
 }

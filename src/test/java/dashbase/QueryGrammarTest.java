@@ -93,4 +93,12 @@ public class QueryGrammarTest {
         Assert.assertEquals(node.getClass().getSimpleName(), "AstQueryProgram");
     }
 
+    @Test
+    public void testTransformer() {
+        Lexer lexer = new QueryLexer("{\"query\": { \"match\" : \"lfkdsk\"}}");
+        Queue<Token> tokens = lexer.tokens();
+        AstNode node = new QueryGrammar().getAst(tokens);
+        Assert.assertEquals(node.child(1).child(0).getClass().getSimpleName(), "QueryLabel");
+    }
+
 }

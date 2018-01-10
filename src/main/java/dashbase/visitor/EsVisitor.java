@@ -1,46 +1,91 @@
 package dashbase.visitor;
 
+import com.lfkdsk.justel.ast.base.AstNode;
 import dashbase.ast.*;
+import dashbase.ast.inner.MatchLabel;
+import dashbase.ast.inner.QueryLabel;
+import dashbase.request.query.Query;
+import dashbase.request.Request;
+import dashbase.request.query.StringQuery;
 import dashbase.utils.visitor.AstVisitor;
 
-public class EsVisitor implements AstVisitor<String> {
+import java.util.Iterator;
+
+import static dashbase.utils.GrammarHelper.under;
+
+public class EsVisitor implements AstVisitor<Request> {
+
+    private Request request = new Request();
+
     @Override
-    public String visitAstArrayLabel(AstArrayLabel visitor) {
-        return null;
+    public Request visitAstArrayLabel(AstArrayLabel visitor) {
+        throw new UnsupportedOperationException("cannot find method : " + "visit" + getClass().getSimpleName());
     }
 
     @Override
-    public String visitAstInnerLabelExpr(AstInnerLabelExpr visitor) {
-        return null;
+    public Request visitAstInnerLabelExpr(AstInnerLabelExpr visitor) {
+        throw new UnsupportedOperationException("cannot find method : " + "visit" + getClass().getSimpleName());
     }
 
     @Override
-    public String visitAstLabelExpr(AstLabelExpr visitor) {
-        return null;
+    public Request visitAstLabelExpr(AstLabelExpr visitor) {
+        ((QueryAstList) visitor.child(0)).accept(this);
+        return request;
     }
 
     @Override
-    public String visitAstObjectLabel(AstObjectLabel visitor) {
-        return null;
+    public Request visitAstObjectLabel(AstObjectLabel visitor) {
+        for (AstNode node : visitor.labels()) {
+            ((QueryAstList) node).accept(this);
+        }
+        return request;
     }
 
     @Override
-    public String visitAstPrimary(AstPrimary visitor) {
-        return null;
+    public Request visitAstPrimary(AstPrimary visitor) {
+        throw new UnsupportedOperationException("cannot find method : " + "visit" + getClass().getSimpleName());
     }
 
     @Override
-    public String visitAstPrimaryList(AstPrimaryList visitor) {
-        return null;
+    public Request visitAstPrimaryList(AstPrimaryList visitor) {
+        throw new UnsupportedOperationException("cannot find method : " + "visit" + getClass().getSimpleName());
     }
 
     @Override
-    public String visitAstQueryProgram(AstQueryProgram visitor) {
-        return null;
+    public Request visitAstQueryProgram(AstQueryProgram visitor) {
+        visitor.program().accept(this);
+        return request;
     }
 
     @Override
-    public String visitAstValueLabel(AstValueLabel visitor) {
-        return null;
+    public Request visitAstValueLabel(AstValueLabel visitor) {
+        throw new UnsupportedOperationException("cannot find method : " + "visit" + getClass().getSimpleName());
+    }
+
+    @Override
+    public Request visitAstLabelList(AstLabelList visitor) {
+        for (AstNode node : visitor.labels()) {
+            ((QueryAstList) node).accept(this);
+        }
+        return request;
+    }
+
+    @Override
+    public Request visitQueryLabel(QueryLabel visitor) {
+        visitor.query().accept(this);
+        return request;
+    }
+
+
+    @Override
+    public Request visitMatchLabel(MatchLabel visitor) {
+        if (under(visitor, QueryLabel.class)) {
+            StringQuery singleQuery = new StringQuery();
+            singleQuery.setQueryType("string");
+            singleQuery.setQueryStr(visitor.text());
+            request.setQuery(singleQuery);
+        }
+
+        return request;
     }
 }
