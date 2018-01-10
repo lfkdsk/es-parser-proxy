@@ -24,10 +24,8 @@ public class EsVisitor implements AstVisitor<Request> {
 
     @Override
     public Request visitAstInnerLabelExpr(AstInnerLabelExpr visitor) {
-        if (under(visitor, MatchLabel.class)) {
-            StringQuery query = (StringQuery) request.getQuery();
-            query.setQueryStr(String.format("%s:%s", visitor.key(), visitor.value()));
-        }
+        StringQuery query = (StringQuery) request.getQuery();
+        query.setQueryStr(String.format("%s:%s", visitor.key(), visitor.value()));
 
         return request;
     }
@@ -86,8 +84,8 @@ public class EsVisitor implements AstVisitor<Request> {
     public Request visitMatchLabel(MatchLabel visitor) {
         StringQuery singleQuery = new StringQuery();
         singleQuery.setQueryType("string");
-        singleQuery.setQueryStr(visitor.text());
         request.setQuery(singleQuery);
+        visitAstInnerLabelExpr((AstInnerLabelExpr) visitor.child(1));
 
         return request;
     }

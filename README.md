@@ -1,55 +1,38 @@
 # EtD Proxy Demo
 
-> Demo 包含成品基本的语法结构，和 Lexer && Parser，暂时未包含 Converter 的具体实现。
+![es-db](art/es-ast-db.png)
 
-## Grammar Define
+* Input：
 
-``` java
-	// ... more in QueryGrammar.java
-    ///////////////////////////////////////////////////////////////////////////
-    // label := value | object | array
-    ///////////////////////////////////////////////////////////////////////////
+  ``` json
+  {
+         "query": {
+             "match" : {
+                 "kind" : "SERVER"
+             }
+         }
+  }
+  ```
 
-    @Getter
-    private BnfCom label = label0.reset(AstLabelExpr.class).or(
-            valueLabel,
-            objectLabel,
-            arrayLabel
-    );
+* Output:
 
-    ///////////////////////////////////////////////////////////////////////////
-    // program = {
-    //      labelList
-    // } EOL (end of line)
-    ///////////////////////////////////////////////////////////////////////////
-
-    @Getter
-    private BnfCom program = rule(AstQueryProgram.class).token("{").maybe(innerLabelList).token("}").sep(EOL);
-
-```
-
-可以在代码中直接使用 Combinator 进行语法定义，修改也只需要修改一处。
-
-> \# todo 更多功能的 Combinators
-
-
-
-## Converter
-
-使用不同的 Visitor 实现类，实现对不同目标语言语法的转换支持。
-
-``` java
-public interface AstVisitor<T> {
-    T visitAstArrayLabel(AstArrayLabel visitor);
-
-    T visitAstInnerLabelExpr(AstInnerLabelExpr visitor);
-	// more... in AstVisitor.java
-}
-
-```
-
-
-
+  ``` json
+  {
+    "numResults": 10,
+    "tableNames": [],
+    "query": {
+      "queryStr": "kind:SERVER",
+      "queryType": "string"
+    },
+    "fields": [
+      "*"
+    ],
+    "useApproximation": false,
+    "ctx": "",
+    "timeoutMillis": 0,
+    "disableHighlight": false
+  }
+  ```
 ## Test
 
-包含基础语法结构（返回当前生成的 AST）的测试。
+包含基础语法结构（）的测试。

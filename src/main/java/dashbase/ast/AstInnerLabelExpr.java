@@ -15,6 +15,6 @@ public class AstInnerLabelExpr extends QueryAstList {
     }
 
     public String value() {
-        return child(2).toString();
+        return child(1).toString();
     }
 }
