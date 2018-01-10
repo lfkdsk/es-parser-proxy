@@ -12,6 +12,6 @@ public class QueryLabel extends QueryAstList{
     }
 
     public QueryAstList query() {
-        return (QueryAstList) child(2);
+        return (QueryAstList) child(1);
     }
 }

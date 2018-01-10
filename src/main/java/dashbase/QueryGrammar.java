@@ -4,9 +4,12 @@ import com.lfkdsk.justel.literal.BoolLiteral;
 import com.lfkdsk.justel.literal.IDLiteral;
 import com.lfkdsk.justel.literal.NumberLiteral;
 import com.lfkdsk.justel.literal.StringLiteral;
+import dashbase.ast.inner.MatchLabel;
+import dashbase.ast.inner.QueryLabel;
 import dashbase.bnf.BnfCom;
 import com.lfkdsk.justel.token.Token;
 import dashbase.ast.*;
+import dashbase.request.query.Query;
 import dashbase.token.Tokens;
 import dashbase.utils.GrammarHelper;
 import lombok.Getter;
@@ -112,7 +115,7 @@ public class QueryGrammar {
 
     private BnfCom matchNone = rule().wrap("match_none").sep(":").sep("{").sep("}");
 
-    private BnfCom match = rule().wrap("match").sep(":").sep("{").ast(innerLabel).sep("}");
+    private BnfCom match = rule(MatchLabel.class).wrap("match").sep(":").sep("{").ast(innerLabel).sep("}");
 
     private BnfCom matchQueryPhrase = rule().wrap("match_phrase").sep(":").sep("{").ast(innerLabel).sep("}");
 
@@ -127,7 +130,7 @@ public class QueryGrammar {
     private BnfCom queryString = rule().wrap("query_string").sep(":").sep("{").ast(innerLabel).sep("}");
 
     @Getter
-    private BnfCom query = rule().wrap("query").sep(":").sep("{").or(
+    private BnfCom query = rule(QueryLabel.class).wrap("query").sep(":").sep("{").or(
             match,
             matchAll,
             matchNone,

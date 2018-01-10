@@ -84,12 +84,10 @@ public class EsVisitor implements AstVisitor<Request> {
 
     @Override
     public Request visitMatchLabel(MatchLabel visitor) {
-        if (under(visitor, QueryLabel.class)) {
-            StringQuery singleQuery = new StringQuery();
-            singleQuery.setQueryType("string");
-            singleQuery.setQueryStr(visitor.text());
-            request.setQuery(singleQuery);
-        }
+        StringQuery singleQuery = new StringQuery();
+        singleQuery.setQueryType("string");
+        singleQuery.setQueryStr(visitor.text());
+        request.setQuery(singleQuery);
 
         return request;
     }

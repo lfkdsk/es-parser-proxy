@@ -16,6 +16,6 @@ public class MatchLabel extends QueryAstList {
     }
 
     public String text() {
-        return child(2).toString();
+        return child(1).toString();
     }
 }

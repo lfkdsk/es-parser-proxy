@@ -12,7 +12,7 @@ public class AstQueryProgram extends QueryAstList {
     }
 
     public QueryAstList program() {
-        return (QueryAstList) this.child(1);
+        return (QueryAstList) this.child(0);
     }
 
 }
