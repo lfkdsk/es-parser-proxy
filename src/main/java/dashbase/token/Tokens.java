@@ -4,6 +4,7 @@ import com.lfkdsk.justel.ast.base.AstNode;
 import com.lfkdsk.justel.parser.BnfCom;
 import dashbase.ast.inner.MatchLabel;
 import dashbase.ast.inner.QueryLabel;
+import dashbase.ast.inner.TermLabel;
 
 public class Tokens {
     public static final int AST_PRIMARY_LABEL = 3000;
@@ -19,7 +20,8 @@ public class Tokens {
     public static final int INNER_LABEL = 3008;
     public static final int QUERY = 3009;
     public static final int MATCH = 3010;
-
+    public static final int BOOL = 3011;
+    public static final int TERM = 3012;
 
     public static final BnfCom.Operators labels = new BnfCom.Operators();
 
@@ -30,5 +32,6 @@ public class Tokens {
     static {
         addLabels("query", QUERY, QueryLabel.class);
         addLabels("match", MATCH, MatchLabel.class);
+        addLabels("term", TERM, TermLabel.class);
     }
 }

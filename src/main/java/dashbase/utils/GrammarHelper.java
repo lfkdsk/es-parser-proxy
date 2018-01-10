@@ -6,6 +6,7 @@ import com.lfkdsk.justel.ast.tree.AstBinaryExpr;
 import com.lfkdsk.justel.parser.BnfCom;
 import dashbase.ast.AstInnerLabelExpr;
 import dashbase.ast.QueryAstList;
+import dashbase.request.query.Query;
 
 public class GrammarHelper {
 
@@ -15,6 +16,7 @@ public class GrammarHelper {
         if (precedence == null) {
             return expr;
         }
+
         BnfCom.Factory factory = precedence.factory;
 
         return factory.make(expr.getChildren());

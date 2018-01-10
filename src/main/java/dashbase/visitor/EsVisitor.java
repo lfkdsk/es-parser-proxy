@@ -24,7 +24,12 @@ public class EsVisitor implements AstVisitor<Request> {
 
     @Override
     public Request visitAstInnerLabelExpr(AstInnerLabelExpr visitor) {
-        throw new UnsupportedOperationException("cannot find method : " + "visit" + getClass().getSimpleName());
+        if (under(visitor, MatchLabel.class)) {
+            StringQuery query = (StringQuery) request.getQuery();
+            query.setQueryStr(String.format("%s:%s", visitor.key(), visitor.value()));
+        }
+
+        return request;
     }
 
     @Override
