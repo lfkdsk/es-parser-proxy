@@ -33,6 +33,23 @@
     "disableHighlight": false
   }
   ```
-## Test
+## AST Structure 
 
-包含基础语法结构（）的测试。
+``` javascript
+// AstObject -> Property List
+{
+  // => Property List
+  // => Primary Property => [ StringLiterial, Literial]
+  "bool": true,
+  // => Array Property => [ Literial List ] | [ AstObject List ] | [ AstValueList List ]
+  // => Array Property is List
+  "array": [
+      
+   ],
+  // => Object Property => AstObject 
+  "object": {
+  	    
+  }
+}
+```
+
