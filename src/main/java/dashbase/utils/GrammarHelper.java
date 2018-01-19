@@ -1,8 +1,8 @@
 package dashbase.utils;
 
-import dashbase.ast.primary.AstPrimaryProperty;
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
+import dashbase.ast.primary.AstPrimaryProperty;
 import dashbase.bnf.BnfCom;
 
 public class GrammarHelper {

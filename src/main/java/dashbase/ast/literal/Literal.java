@@ -9,7 +9,7 @@ import dashbase.token.Token;
  * Literal is an wrapper of LiterToken.
  *
  * @author liufengkai
- * Created by liufengkai on 2017/7/22.
+ *         Created by liufengkai on 2017/7/22.
  */
 public abstract class Literal extends AstLeaf {
 

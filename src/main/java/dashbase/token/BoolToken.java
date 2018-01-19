@@ -37,6 +37,7 @@ public class BoolToken extends ReservedToken {
 
     public BoolToken(int lineNumber, BooleanEnum booleanEnum) {
         super(lineNumber, booleanEnum.toString());
+        this.tag = BOOLEAN;
     }
 
     /**

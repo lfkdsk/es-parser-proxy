@@ -17,5 +17,6 @@ public class AstPrimaryTest {
 
         Assert.assertNotNull(program);
         Assert.assertEquals(program.program().childCount(), 3);
+
     }
 }

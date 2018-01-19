@@ -2,10 +2,8 @@ package dashbase.ast.primary;
 
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
-import dashbase.ast.literal.BoolLiteral;
 import dashbase.ast.literal.Literal;
-import dashbase.ast.literal.NumberLiteral;
-import dashbase.ast.literal.StringLiteral;
+import dashbase.token.Token;
 import dashbase.token.Tokens;
 
 import java.util.List;
@@ -35,15 +33,22 @@ public class AstPrimary extends QueryAstList {
     }
 
     public PrimaryType type() {
-        Literal value = literal();
-        if (value instanceof BoolLiteral) {
-            return PrimaryType.BOOL;
-        } else if (value instanceof StringLiteral) {
-            return PrimaryType.STRING;
-        } else if (value instanceof NumberLiteral) {
-            return PrimaryType.NUMBER;
+        int tag = literal().token().getTag();
+        switch (tag) {
+            case Token.STRING: {
+                return PrimaryType.STRING;
+            }
+            case Token.BOOLEAN: {
+                return PrimaryType.BOOL;
+            }
+            case Token.DOUBLE:
+            case Token.LONG:
+            case Token.FLOAT:
+            case Token.INTEGER: {
+                return PrimaryType.NUMBER;
+            }
         }
 
-        throw new UnsupportedOperationException("UnSupported value type " + value.toString());
+        throw new UnsupportedOperationException(" un supported primary type " + value());
     }
 }

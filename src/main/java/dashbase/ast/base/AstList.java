@@ -8,8 +8,6 @@
 
 package dashbase.ast.base;
 
-import dashbase.exception.EvalException;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class AstList extends AstNode {
      * List of Child Node
      */
     protected List<AstNode> children;
-
 
     public AstList(List<AstNode> children, int tag) {
         super(tag);

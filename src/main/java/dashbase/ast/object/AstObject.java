@@ -2,6 +2,9 @@ package dashbase.ast.object;
 
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
+import dashbase.ast.property.AstProperty;
+import dashbase.ast.property.AstPropertyList;
+import dashbase.ast.property.Property;
 import dashbase.token.Tokens;
 
 import java.util.List;
@@ -11,17 +14,20 @@ public class AstObject extends QueryAstList {
         super(children, Tokens.AST_OBJECT);
     }
 
-    public List<AstNode> labels() {
-        return children;
+    public AstPropertyList propertyList() {
+        return (AstPropertyList) child(0);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (AstNode node : labels()) {
-            builder.append(node.toString());
+    public AstProperty child(String name) {
+        for (AstNode node : propertyList()) {
+            AstProperty propertyParent = (AstProperty) node;
+            Property property = propertyParent.property();
+
+            if (property.keyNode().value().equals(name)) {
+                return propertyParent;
+            }
         }
 
-        return builder.toString();
+        return null;
     }
 }

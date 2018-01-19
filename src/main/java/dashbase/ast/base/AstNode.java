@@ -9,6 +9,9 @@
 package dashbase.ast.base;
 
 
+import dashbase.ast.env.Context;
+import dashbase.ast.env.Evaluable;
+import dashbase.exception.EvalException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,45 +22,13 @@ import java.util.Iterator;
  *
  * @author liufengkai
  */
-public abstract class AstNode implements Iterable<AstNode> {
+public abstract class AstNode implements Iterable<AstNode>, Evaluable {
 
     /**
      * Spec Tag for Ast Node
      */
     @Getter
     private final int tag;
-
-    public static final int AMPERSAND_OP = 600;
-
-    public static final int PRIMARY_EXPR = 601;
-
-    public static final int BINARY_EXPR = 602;
-
-    public static final int FUNC_ARGUMENT_EXPR = 603;
-
-    public static final int ARRAY_INDEX_OP = 604;
-
-    public static final int BIT_WISE_OP = 605;
-
-    public static final int DOT_OP = 606;
-
-    public static final int EQUAL_OP = 607;
-
-    public static final int NEGATIVE_OP = 608;
-
-    public static final int NOT_OP = 609;
-
-    public static final int UN_EQUAL_OP = 610;
-
-    public static final int FUNCTION_EXPR = 611;
-
-    public static final int POSTFIX = 612;
-
-    public static final int COND_EXPR = 613;
-
-    public static final int EXTEND_FUNC = 614;
-
-    public static final int PROGRAM = 700;
 
     /**
      * index of child
@@ -132,6 +103,7 @@ public abstract class AstNode implements Iterable<AstNode> {
      *
      * @return list of node
      */
+    @Override
     public Iterator<AstNode> iterator() {
         return children();
     }
@@ -149,5 +121,10 @@ public abstract class AstNode implements Iterable<AstNode> {
     @Override
     public boolean equals(Object obj) {
         return hashCode() == obj.hashCode();
+    }
+
+    @Override
+    public void eval(Context context) {
+        throw new EvalException("can not eval : " + toString(), this);
     }
 }
