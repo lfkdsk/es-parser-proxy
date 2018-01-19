@@ -187,29 +187,28 @@ public class JustLexer {
         String floatToken = matcher.group("FLOAT");
 
         if (floatToken != null) {
-            Number checkedNum = NumberUtils.parseDouble(floatToken);
-            int checkedType = Token.FLOAT;
+            int checkedType;
+            Number checkedNum;
 
-            if (checkedNum instanceof Double) {
-                checkedType = Token.DOUBLE;
+            // float
+            if (floatToken.contains(".") || floatToken.contains("e") || floatToken.contains("E")) {
+                checkedNum = NumberUtils.parseDouble(floatToken);
+                checkedType = Token.FLOAT;
+
+                if (checkedNum instanceof Double) {
+                    checkedType = Token.DOUBLE;
+                }
+            // int
+            } else {
+                checkedNum = NumberUtils.parseLong(floatToken);
+                checkedType = Token.INTEGER;
+
+                if (checkedNum instanceof Long) {
+                    checkedType = Token.LONG;
+                }
             }
 
             queue.add(new NumberToken(lineNum, checkedType, floatToken, checkedNum));
-
-            return;
-        }
-
-        String intToken = matcher.group("INT");
-
-        if (intToken != null) {
-            Number checkedNum = NumberUtils.parseLong(intToken);
-            int checkedType = Token.INTEGER;
-
-            if (checkedNum instanceof Long) {
-                checkedType = Token.LONG;
-            }
-
-            queue.add(new NumberToken(lineNum, checkedType, intToken, checkedNum));
 
             return;
         }

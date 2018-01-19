@@ -1,7 +1,9 @@
 package dashbase.ast.value;
 
 import dashbase.ast.QueryAstList;
+import dashbase.ast.array.AstArray;
 import dashbase.ast.base.AstNode;
+import dashbase.ast.primary.AstPrimary;
 import dashbase.token.Tokens;
 
 import java.util.List;
@@ -16,5 +18,21 @@ public class AstValue extends QueryAstList {
         super(children, Tokens.AST_VALUE);
     }
 
+    public AstNode value() {
+        AstNode node = child(0);
+        int tag = node.getTag();
+        switch (tag) {
 
+            case Tokens.AST_ARRAY: {
+                return ((AstArray) node).list();
+            }
+            case Tokens.AST_PRIMARY: {
+                return ((AstPrimary) node).literal();
+            }
+            default:
+            case Tokens.AST_OBJECT: {
+                return node;
+            }
+        }
+    }
 }

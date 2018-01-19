@@ -19,6 +19,6 @@ public class AstArray extends QueryAstList {
     }
 
     public AstValueList list() {
-        return (AstValueList) child(1);
+        return (AstValueList) child(0);
     }
 }

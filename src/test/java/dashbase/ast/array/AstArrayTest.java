@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dashbase.ast.AstQueryProgram;
 import dashbase.ast.property.AstProperty;
+import dashbase.ast.value.AstValueList;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,7 +29,6 @@ public class AstArrayTest {
 
         AstArrayProperty astArrayProperty = (AstArrayProperty) nodes.object().property("lfkdsk");
         Assert.assertNotNull(nodes);
-
-
+        Assert.assertTrue(astArrayProperty.child(1) instanceof AstValueList);
     }
 }

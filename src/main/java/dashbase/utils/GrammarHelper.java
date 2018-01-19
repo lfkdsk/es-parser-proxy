@@ -4,6 +4,7 @@ import dashbase.ast.array.AstArray;
 import dashbase.ast.base.AstNode;
 import dashbase.ast.primary.AstPrimary;
 import dashbase.ast.property.AstProperty;
+import dashbase.ast.value.AstValue;
 
 public class GrammarHelper {
 
@@ -20,6 +21,9 @@ public class GrammarHelper {
             } else if (child instanceof AstArray) {
                 // remove AstArray.java Level
                 root.resetChild(i, ((AstArray) child).list());
+            } else if (child instanceof AstValue) {
+                // remove AstValue.java Level
+                root.resetChild(i, ((AstValue) child).value());
             }
 
             transformAst(child);

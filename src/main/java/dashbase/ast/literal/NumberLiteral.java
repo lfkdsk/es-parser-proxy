@@ -4,8 +4,6 @@ import dashbase.exception.ParseException;
 import dashbase.token.NumberToken;
 import dashbase.token.Token;
 
-import static dashbase.utils.NumberUtils.castTokenValue;
-
 /**
  * Number Literal.
  * We support two kinds of Number Value :
@@ -15,7 +13,7 @@ import static dashbase.utils.NumberUtils.castTokenValue;
  * - Double Value
  *
  * @author liufengkai
- *         Created by liufengkai on 2017/7/24.
+ * Created by liufengkai on 2017/7/24.
  */
 public class NumberLiteral extends Literal {
 
@@ -37,7 +35,17 @@ public class NumberLiteral extends Literal {
 
     @Override
     public Number value() {
-        return castTokenValue(numberToken());
+        switch (token.getTag()) {
+            case Token.INTEGER:
+                return number.intValue();
+            case Token.LONG:
+                return number.longValue();
+            case Token.FLOAT:
+                return number.floatValue();
+            default:
+            case Token.DOUBLE:
+                return number.doubleValue();
+        }
     }
 
     @Override
