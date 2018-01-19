@@ -8,6 +8,6 @@ import java.util.List;
 
 public class AstArray extends QueryAstList {
     public AstArray(List<AstNode> children) {
-        super(children, Tokens.AST_ARRAY_LABEL);
+        super(children, Tokens.AST_ARRAY);
     }
 }

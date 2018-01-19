@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AstValue extends QueryAstList {
     public AstValue(List<AstNode> children) {
-        super(children, Tokens.AST_PRIMARY_LABEL);
+        super(children, Tokens.AST_VALUE);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AstPrimaryProperty extends QueryAstList {
     public AstPrimaryProperty(List<AstNode> children) {
-        super(children, Tokens.INNER_LABEL);
+        super(children, Tokens.AST_PRIMARY_PROPERTY);
     }
 
     public StringLiteral keyNode() {

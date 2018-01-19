@@ -15,6 +15,6 @@ import java.util.List;
  */
 public class AstPropertyList extends QueryAstList {
     public AstPropertyList(List<AstNode> children) {
-        super(children, Tokens.PRIMARY_LIST);
+        super(children, Tokens.PROPERTY_LIST);
     }
 }

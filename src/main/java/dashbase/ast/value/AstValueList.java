@@ -14,6 +14,6 @@ import java.util.List;
  */
 public class AstValueList extends QueryAstList {
     public AstValueList(List<AstNode> children) {
-        super(children, Tokens.OBJECT_LIST);
+        super(children, Tokens.VALUE_LIST);
     }
 }

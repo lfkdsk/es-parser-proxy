@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AstObject extends QueryAstList {
     public AstObject(List<AstNode> children) {
-        super(children, Tokens.AST_OBJECT_LABEL);
+        super(children, Tokens.AST_OBJECT);
     }
 
     public List<AstNode> labels() {
