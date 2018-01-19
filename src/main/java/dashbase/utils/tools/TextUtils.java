@@ -104,4 +104,37 @@ public class TextUtils {
         return sb.toString();
     }
 
+    /**
+     * 所谓字符串转译
+     *
+     * @param str 传入字符串
+     * @return 返回字符串
+     */
+    public static String toStringLiteral(String str) {
+        StringBuilder builder = new StringBuilder();
+
+        int length = str.length() - 1;
+
+        for (int i = 1; i < length; i++) {
+            char ch = str.charAt(i);
+
+            // 发现需要转译的\
+            if (ch == '\\' && i + 1 < length) {
+                // 取下一个字符
+                int ch2 = str.charAt(i + 1);
+                // 手动跳过
+                if (ch2 == '"' || ch2 == '\\') {
+                    ch = str.charAt(++i);
+                    // 手工转译嵌入\n
+                } else if (ch2 == 'n') {
+                    ++i;
+                    ch = '\n';
+                }
+            }
+
+            builder.append(ch);
+        }
+
+        return builder.toString();
+    }
 }

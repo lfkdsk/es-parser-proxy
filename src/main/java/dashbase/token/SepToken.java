@@ -46,6 +46,45 @@ public class SepToken extends Token {
 
     public final static Map<String, SepToken> sepTokens = new HashMap<>();
 
+    public static void addSepToken(SepToken token) {
+        sepTokens.put(token.getText(), token);
+    }
+
+    static {
+        addSepToken(AMPERSAND_TOKEN);
+        addSepToken(AND_TOKEN);
+
+        addSepToken(BAR_TOKEN);
+        addSepToken(OR_TOKEN);
+
+        addSepToken(LESS_TOKEN);
+        addSepToken(LTE_TOKEN);
+
+        addSepToken(GREAT_TOKEN);
+        addSepToken(GTE_TOKEN);
+
+        addSepToken(QUESTION_TOKEN);
+        addSepToken(COLON_TOKEN);
+
+        addSepToken(PLUS_TOKEN);
+        addSepToken(MINUS_TOKEN);
+
+        addSepToken(MULTIPLY_TOKEN);
+        addSepToken(DIVIDE_TOKEN);
+
+        addSepToken(MOD_TOKEN);
+        addSepToken(EXCLAM_TOKEN);
+
+        addSepToken(EQUAL_TOKEN);
+        addSepToken(NOT_EQUAL_TOKEN);
+        addSepToken(EXCLAM_TOKEN);
+
+        addSepToken(DOT_TOKEN);
+        addSepToken(COLLECT_GET_LEFT_TOKEN);
+        addSepToken(COLLECT_GET_RIGHT_TOKEN);
+        addSepToken(EOL_TOKEN);
+    }
+
     /**
      * Skip text.
      */
@@ -62,8 +101,6 @@ public class SepToken extends Token {
         if (text.equals(Token.EOL)) {
             this.tag = Token.EOL_TAG;
         }
-
-        sepTokens.put(text, this);
     }
 
     @Override

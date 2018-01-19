@@ -5,8 +5,6 @@ package dashbase.token;
  *
  * @author liufengkai
  *         Created by liufengkai on 2017/7/18.
- * @see com.lfkdsk.justel.lexer.JustLexerImpl
- * @see com.lfkdsk.justel.parser.JustParserImpl
  */
 public class Token {
 

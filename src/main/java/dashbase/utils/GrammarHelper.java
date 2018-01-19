@@ -1,12 +1,9 @@
 package dashbase.utils;
 
-import com.lfkdsk.justel.ast.base.AstNode;
-import com.lfkdsk.justel.ast.function.Operator;
-import com.lfkdsk.justel.ast.tree.AstBinaryExpr;
-import com.lfkdsk.justel.parser.BnfCom;
 import dashbase.ast.AstInnerLabelExpr;
 import dashbase.ast.QueryAstList;
-import dashbase.request.query.Query;
+import dashbase.ast.base.AstNode;
+import dashbase.bnf.BnfCom;
 
 public class GrammarHelper {
 

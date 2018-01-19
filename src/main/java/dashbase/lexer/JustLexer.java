@@ -3,21 +3,19 @@ package dashbase.lexer;
 
 import dashbase.exception.ParseException;
 import dashbase.token.*;
-import dashbase.utils.CodeDialog;
 import dashbase.utils.NumberUtils;
-import dashbase.utils.logger.Logger;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static dashbase.lexer.JustRegex.hobbyReg;
 import static dashbase.token.ReservedToken.reservedToken;
 import static dashbase.token.SepToken.sepTokens;
+import static dashbase.utils.tools.TextUtils.toStringLiteral;
 
 /**
  * JustLexer 分词器
@@ -160,21 +158,6 @@ public class JustLexer {
             return;
         }
 
-        String intToken = matcher.group("INT");
-
-        if (intToken != null) {
-            Number checkedNum = NumberUtils.parseLong(intToken);
-            int checkedType = Token.INTEGER;
-
-            if (checkedNum instanceof Long) {
-                checkedType = Token.LONG;
-            }
-
-            queue.add(new NumberToken(lineNum, checkedType, intToken, checkedNum));
-
-            return;
-        }
-
         String floatToken = matcher.group("FLOAT");
 
         if (floatToken != null) {
@@ -186,6 +169,21 @@ public class JustLexer {
             }
 
             queue.add(new NumberToken(lineNum, checkedType, floatToken, checkedNum));
+
+            return;
+        }
+
+        String intToken = matcher.group("INT");
+
+        if (intToken != null) {
+            Number checkedNum = NumberUtils.parseLong(intToken);
+            int checkedType = Token.INTEGER;
+
+            if (checkedNum instanceof Long) {
+                checkedType = Token.LONG;
+            }
+
+            queue.add(new NumberToken(lineNum, checkedType, intToken, checkedNum));
 
             return;
         }
@@ -226,50 +224,6 @@ public class JustLexer {
             } else {
                 queue.add(new SepToken(lineNum, -1, symbol));
             }
-        }
-    }
-
-    /**
-     * 所谓字符串转译
-     *
-     * @param str 传入字符串
-     * @return 返回字符串
-     */
-    private String toStringLiteral(String str) {
-        StringBuilder builder = new StringBuilder();
-
-        int length = str.length() - 1;
-
-        for (int i = 1; i < length; i++) {
-            char ch = str.charAt(i);
-
-            // 发现需要转译的\
-            if (ch == '\\' && i + 1 < length) {
-                // 取下一个字符
-                int ch2 = str.charAt(i + 1);
-                // 手动跳过
-                if (ch2 == '"' || ch2 == '\\') {
-                    ch = str.charAt(++i);
-                    // 手工转译嵌入\n
-                } else if (ch2 == 'n') {
-                    ++i;
-                    ch = '\n';
-                }
-            }
-
-            builder.append(ch);
-        }
-
-        return builder.toString();
-    }
-
-    public static void main(String[] args) throws ParseException {
-        JustLexer lexer = new JustLexer(new CodeDialog());
-
-        Logger.init("JustLexer");
-
-        for (Token token; (token = lexer.read()) != Token.EOF; ) {
-            Logger.i(" => " + token.getText() + " = " + token.getTag());
         }
     }
 }

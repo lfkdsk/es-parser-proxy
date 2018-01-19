@@ -1,10 +1,10 @@
 package dashbase.utils.logger;
 
 
-import com.lfkdsk.justel.utils.json.JSONArray;
-import com.lfkdsk.justel.utils.json.JSONException;
-import com.lfkdsk.justel.utils.json.JSONObject;
-import com.lfkdsk.justel.utils.tools.TextUtils;
+import dashbase.utils.json.JSONArray;
+import dashbase.utils.json.JSONException;
+import dashbase.utils.json.JSONObject;
+import dashbase.utils.tools.TextUtils;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;

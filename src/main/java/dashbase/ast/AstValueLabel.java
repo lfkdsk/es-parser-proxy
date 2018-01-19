@@ -1,6 +1,6 @@
 package dashbase.ast;
 
-import com.lfkdsk.justel.ast.base.AstNode;
+import dashbase.ast.base.AstNode;
 import dashbase.token.Tokens;
 
 import java.util.List;

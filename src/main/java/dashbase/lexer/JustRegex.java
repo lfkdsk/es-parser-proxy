@@ -1,7 +1,5 @@
 package dashbase.lexer;
 
-import java.util.regex.Pattern;
-
 /**
  * 匹配词素的默认正则表达式
  *
@@ -51,13 +49,13 @@ public class JustRegex {
     // Regex Define
     ///////////////////////////////////////////////////////////////////////////
 
-    public static final String hobbyUnFormat = "\\s*(?<ANNOTATION>%1$s|?<INT>%2$s|?<FLOAT>%3$s|?<BOOL>%4$s|?<STRING>%5$s|?<TOKEN>%6$s|?<SYMBOL>%7$s)?";
+    public static final String hobbyUnFormat = "\\s*((?<ANNOTATION>%1$s)|(?<FLOAT>%2$s)|(?<INT>%3$s)|(?<BOOL>%4$s)|(?<STRING>%5$s)|(?<TOKEN>%6$s)|(?<SYMBOL>%7$s))?";
 
     public static final String hobbyReg = String.format(
             hobbyUnFormat,
             annotation,
-            numberInt,
             numberFloat,
+            numberInt,
             bool,
             string,
             variable,

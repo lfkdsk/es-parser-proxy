@@ -1,6 +1,7 @@
 package dashbase.utils.collection;
 
-import com.lfkdsk.justel.utils.printer.Log;
+
+import dashbase.utils.printer.Log;
 
 import java.util.Collection;
 import java.util.Map;

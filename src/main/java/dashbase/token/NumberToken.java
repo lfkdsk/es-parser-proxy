@@ -83,6 +83,11 @@ public class NumberToken extends Token {
     }
 
     @Override
+    public String getText() {
+        return String.valueOf(getNumberValue());
+    }
+
+    @Override
     public boolean isNumber() {
         return true;
     }

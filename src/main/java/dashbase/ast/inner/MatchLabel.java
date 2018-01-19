@@ -1,7 +1,8 @@
 package dashbase.ast.inner;
 
-import com.lfkdsk.justel.ast.base.AstNode;
-import dashbase.ast.*;
+import dashbase.ast.AstLabelList;
+import dashbase.ast.QueryAstList;
+import dashbase.ast.base.AstNode;
 import dashbase.token.Tokens;
 
 import java.util.List;
