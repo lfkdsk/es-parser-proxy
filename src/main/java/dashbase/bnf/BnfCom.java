@@ -1,12 +1,13 @@
 package dashbase.bnf;
 
-import com.lfkdsk.justel.ast.base.AstLeaf;
 
-import com.lfkdsk.justel.ast.base.AstNode;
-import com.lfkdsk.justel.ast.function.Operator;
-import com.lfkdsk.justel.exception.ParseException;
-import com.lfkdsk.justel.token.Token;
-import dashbase.ast.QueryAstList;
+import dashbase.ast.base.AstLeaf;
+import dashbase.ast.base.AstList;
+import dashbase.ast.base.AstNode;
+import dashbase.ast.base.Operator;
+import dashbase.exception.ParseException;
+import dashbase.token.Token;
+
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -30,7 +31,7 @@ public class BnfCom {
         /**
          * Grammar Analyze
          *
-         * @param lexer Lexer
+         * @param lexer JustLexer
          * @param nodes Ast-List
          * @throws ParseException
          */
@@ -40,7 +41,7 @@ public class BnfCom {
         /**
          * Match Elements
          *
-         * @param lexer Lexer
+         * @param lexer JustLexer
          * @return tof?
          * @throws ParseException
          */
@@ -139,7 +140,7 @@ public class BnfCom {
 
                 AstNode node = parser.parse(lexer);
                 // leaf or list
-                if (node.getClass() != QueryAstList.class || node.childCount() > 0) {
+                if (node.getClass() != AstList.class || node.childCount() > 0) {
                     nodes.add(node);
                 }
 
@@ -555,7 +556,7 @@ public class BnfCom {
         /**
          * get next operator
          *
-         * @param lexer Lexer
+         * @param lexer JustLexer
          * @return Symbol Operator
          * @throws ParseException
          */
@@ -629,7 +630,7 @@ public class BnfCom {
                         if (results.size() == 1) {
                             return results.get(0);
                         } else {
-                            return new QueryAstList(results, Token.LIST);
+                            return new AstList(results, Token.LIST);
                         }
                     }
                 };

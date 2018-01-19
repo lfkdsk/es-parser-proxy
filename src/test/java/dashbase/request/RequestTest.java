@@ -1,11 +1,7 @@
 package dashbase.request;
 
-import com.lfkdsk.justel.utils.logger.Logger;
+import dashbase.utils.logger.Logger;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
-
-
-import static org.junit.Assert.*;
 
 public class RequestTest {
 
