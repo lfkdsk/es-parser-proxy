@@ -8,7 +8,10 @@ import dashbase.utils.NumberUtils;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +22,8 @@ import static dashbase.utils.tools.TextUtils.toStringLiteral;
 
 /**
  * JustLexer 分词器
+ * Use read() && peek() to get next token
+ * Use tokens() to get all tokens one time
  *
  * @author liufengkai
  */
@@ -26,6 +31,8 @@ public class JustLexer {
     private Pattern regPattern = Pattern.compile(hobbyReg);
 
     private LinkedList<Token> queue = new LinkedList<>();
+
+    private ArrayList<String> avoid = new ArrayList<>();
 
     private boolean hasMore;
 
@@ -39,6 +46,17 @@ public class JustLexer {
     public JustLexer(Reader reader) {
         this.hasMore = true;
         this.reader = new LineNumberReader(reader);
+        this.initial();
+    }
+
+    public JustLexer(String program) {
+        this(new StringReader(program));
+    }
+
+    private void initial() {
+        this.avoid.add("\\t");
+        this.avoid.add("\\r");
+        this.avoid.add("\\n");
     }
 
     /**
@@ -135,8 +153,6 @@ public class JustLexer {
                 throw new ParseException("bad token at line " + lineNum);
             }
         }
-
-        queue.add(new IDToken(lineNum, Token.EOL));
     }
 
     /**
@@ -219,6 +235,12 @@ public class JustLexer {
         String symbol = matcher.group("SYMBOL");
 
         if (symbol != null) {
+
+            // special resolve => " " | "\t" | "\n" | "\r" => useless message
+            if (avoid.contains(symbol)) {
+                return;
+            }
+
             if (sepTokens.containsKey(symbol)) {
                 queue.add(sepTokens.get(symbol));
             } else {
@@ -226,4 +248,19 @@ public class JustLexer {
             }
         }
     }
+
+    /**
+     * Get All tokens once time
+     * # Better to Debug or Use tokens
+     *
+     * @return all-tokens
+     */
+    public Queue<Token> tokens() {
+        while (hasMore) {
+            readLine();
+        }
+
+        return queue;
+    }
+
 }

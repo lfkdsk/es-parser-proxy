@@ -42,13 +42,7 @@ public class CodeDialog extends Reader {
 
 
     private String showDialog() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-
-        JTextArea area = new JTextArea(20, 40);
+        JTextArea area = new JTextArea(30, 40);
         JScrollPane pane = new JScrollPane(area);
 
         int result = JOptionPane.showOptionDialog(null, pane, "Input",

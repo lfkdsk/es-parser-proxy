@@ -1,101 +1,94 @@
 package dashbase.bnf;
 
-
 import dashbase.ast.base.AstLeaf;
 import dashbase.ast.base.AstList;
 import dashbase.ast.base.AstNode;
-import dashbase.ast.base.Operator;
 import dashbase.exception.ParseException;
+import dashbase.lexer.JustLexer;
 import dashbase.token.Token;
-
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * BnfCom Engine
+ * BnfParser 巴克斯范式解析引擎
  *
  * @author liufengkai
- * Created by liufengkai on 16/7/11.
- * @see AToken
- * @see Expr
- * @see Element
- * @see Tree
  */
 public class BnfCom {
 
     protected static abstract class Element {
         /**
-         * Grammar Analyze
+         * 语法分析
          *
-         * @param lexer JustLexer
-         * @param nodes Ast-List
+         * @param lexer 语法分析器
+         * @param nodes 节点
          * @throws ParseException
          */
-        protected abstract void parse(Queue<Token> lexer, List<AstNode> nodes)
+        protected abstract void parse(JustLexer lexer, List<AstNode> nodes)
                 throws ParseException;
 
         /**
-         * Match Elements
+         * 匹配
          *
-         * @param lexer JustLexer
+         * @param lexer 语法分析器
          * @return tof?
          * @throws ParseException
          */
-        protected abstract boolean match(Queue<Token> lexer) throws ParseException;
+        protected abstract boolean match(JustLexer lexer) throws ParseException;
     }
 
     /**
-     * Create Basic Tree
+     * 开一棵子树
+     * Tree中并没有对处理细节的描述
+     * 只是个构造基类
      */
     protected static class Tree extends Element {
-        private BnfCom parser;
+        protected BnfCom parser;
 
-        Tree(BnfCom parser) {
+        public Tree(BnfCom parser) {
             this.parser = parser;
         }
 
         @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
             nodes.add(parser.parse(lexer));
         }
 
         @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
+        protected boolean match(JustLexer lexer) throws ParseException {
             return parser.match(lexer);
         }
     }
 
     /**
-     * Or Tree
+     * BNF 产生式中的 或节点
      * [] | []
      */
     protected static class OrTree extends Element {
-        private BnfCom[] parsers;
+        protected BnfCom[] parsers;
 
-        OrTree(BnfCom[] parsers) {
+        public OrTree(BnfCom[] parsers) {
             this.parsers = parsers;
         }
 
         @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
             BnfCom parser = choose(lexer);
             if (parser == null) {
-                throw new ParseException(lexer.peek());
+                throw new ParseException(lexer.peek(0));
             } else {
                 nodes.add(parser.parse(lexer));
             }
         }
 
         @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
+        protected boolean match(JustLexer lexer) throws ParseException {
             return choose(lexer) != null;
         }
 
-        private BnfCom choose(Queue<Token> lexer) throws ParseException {
+        protected BnfCom choose(JustLexer lexer) throws ParseException {
             for (BnfCom parser : parsers) {
                 if (parser.match(lexer)) {
                     return parser;
@@ -105,11 +98,11 @@ public class BnfCom {
         }
 
         /**
-         * insert to zero node.
+         * 插入节点 插在了0
          *
          * @param parser BNF
          */
-        private void insert(BnfCom parser) {
+        protected void insert(BnfCom parser) {
             BnfCom[] newParsers = new BnfCom[parsers.length + 1];
             newParsers[0] = parser;
             System.arraycopy(parsers, 0, newParsers, 1, parsers.length);
@@ -117,25 +110,28 @@ public class BnfCom {
         }
     }
 
+
     /**
-     * Repeat Node
+     * 重复出现的语句节点
+     * 比如block中会出现多次的simple
+     * 还有Option
      */
     protected static class Repeat extends Element {
-        BnfCom parser;
+        protected BnfCom parser;
 
-        boolean onlyOne;
+        protected boolean onlyOne;
 
         /**
          * @param parser  BNF
-         * @param onlyOne onlyOne?
+         * @param onlyOne 节点出现次数
          */
-        Repeat(BnfCom parser, boolean onlyOne) {
+        public Repeat(BnfCom parser, boolean onlyOne) {
             this.parser = parser;
             this.onlyOne = onlyOne;
         }
 
         @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
             while (parser.match(lexer)) {
 
                 AstNode node = parser.parse(lexer);
@@ -144,26 +140,25 @@ public class BnfCom {
                     nodes.add(node);
                 }
 
-                if (onlyOne) {
+                if (onlyOne)
                     break;
-                }
             }
         }
 
         @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
+        protected boolean match(JustLexer lexer) throws ParseException {
             return parser.match(lexer);
         }
     }
 
     /**
-     * Token Basic
+     * Token 基类
      */
     protected static abstract class AToken extends Element {
 
-        Factory factory;
+        protected Factory factory;
 
-        AToken(Class<? extends AstLeaf> clazz) {
+        public AToken(Class<? extends AstLeaf> clazz) {
             if (clazz == null) {
                 clazz = AstLeaf.class;
             }
@@ -172,13 +167,13 @@ public class BnfCom {
         }
 
         @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
-            return tokenTest(lexer.element());
+        protected boolean match(JustLexer lexer) throws ParseException {
+            return tokenTest(lexer.peek(0));
         }
 
         @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
-            Token token = lexer.poll();
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
+            Token token = lexer.read();
 
             if (tokenTest(token)) {
                 AstNode leaf = factory.make(token);
@@ -190,21 +185,22 @@ public class BnfCom {
         }
 
         /**
-         * Token could pass test?
+         * 判断是否符合该类Token
+         * 标准的抽象方法
          *
-         * @param token com.lfkdsk.justel.token
+         * @param token token
          * @return tof?
          */
         protected abstract boolean tokenTest(Token token);
     }
 
     /**
-     * ID Token
+     * ID 类型的Token
      */
     protected static class IdToken extends AToken {
         Set<String> reserved;
 
-        IdToken(Class<? extends AstLeaf> clazz, Set<String> reserved) {
+        public IdToken(Class<? extends AstLeaf> clazz, Set<String> reserved) {
             super(clazz);
             this.reserved = reserved != null ? reserved : new HashSet<>();
         }
@@ -216,11 +212,11 @@ public class BnfCom {
     }
 
     /**
-     * Number Token
+     * 数字类型Token
      */
     protected static class NumToken extends AToken {
 
-        NumToken(Class<? extends AstLeaf> clazz) {
+        public NumToken(Class<? extends AstLeaf> clazz) {
             super(clazz);
         }
 
@@ -228,14 +224,15 @@ public class BnfCom {
         protected boolean tokenTest(Token token) {
             return token.isNumber();
         }
+
     }
 
     /**
-     * String Token
+     * 字符串类型Token
      */
     protected static class StrToken extends AToken {
 
-        StrToken(Class<? extends AstLeaf> clazz) {
+        public StrToken(Class<? extends AstLeaf> clazz) {
             super(clazz);
         }
 
@@ -247,7 +244,7 @@ public class BnfCom {
 
     protected static class BoolToken extends AToken {
 
-        BoolToken(Class<? extends AstLeaf> clazz) {
+        public BoolToken(Class<? extends AstLeaf> clazz) {
             super(clazz);
         }
 
@@ -259,7 +256,7 @@ public class BnfCom {
 
     protected static class NullToken extends AToken {
 
-        NullToken(Class<? extends AstLeaf> clazz) {
+        public NullToken(Class<? extends AstLeaf> clazz) {
             super(clazz);
         }
 
@@ -269,9 +266,10 @@ public class BnfCom {
         }
     }
 
+
     protected static class TypeToken extends AToken {
 
-        TypeToken(Class<? extends AstLeaf> clazz) {
+        public TypeToken(Class<? extends AstLeaf> clazz) {
             super(clazz);
         }
 
@@ -281,108 +279,19 @@ public class BnfCom {
         }
     }
 
-    protected static class Rex extends Leaf {
-        String token;
-        Pattern pattern;
-
-        Rex(String pat) {
-            super(null);
-            this.token = pat;
-            this.pattern = Pattern.compile(pat);
-        }
-
-        @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
-            Token token = lexer.poll();
-            Matcher matcher = pattern.matcher(token.getText());
-            if (matcher.find()) {
-                find(nodes, token);
-            }
-
-            if (tokens.length > 0) {
-                throw new ParseException(tokens[0] + " expected. ", token);
-            } else {
-                throw new ParseException(token);
-            }
-
-        }
-
-        @Override
-        protected void find(List<AstNode> list, Token token) {
-            super.find(list, token);
-        }
-
-        @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
-            Token token = lexer.element();
-            Matcher matcher = pattern.matcher(token.getText());
-
-            return matcher.find();
-
-        }
-    }
-
-    protected static class WrapToken extends Leaf {
-        WrapToken(String[] pat) {
-            super(pat);
-
-            for (int i = 0; i < tokens.length; i++) {
-                String token = tokens[i];
-                tokens[i] = String.format("\"%s\"", token);
-            }
-        }
-
-        @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
-            Token token = lexer.poll();
-
-            for (String t : tokens) {
-                if (t.equals(String.format("\"%s\"", token.getText()))) {
-                    find(nodes, token);
-                    return;
-                }
-            }
-
-            if (tokens.length > 0) {
-                throw new ParseException(tokens[0] + " expected. ", token);
-            } else {
-                throw new ParseException(token);
-            }
-
-        }
-
-        @Override
-        protected void find(List<AstNode> list, Token token) {
-            super.find(list, token);
-        }
-
-        @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
-            Token token = lexer.element();
-
-            for (String t : tokens) {
-                if (t.equals(String.format("\"%s\"", token.getText()))) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
     /**
-     * Leaf Node.
+     * 叶节点
      */
     protected static class Leaf extends Element {
-        String[] tokens;
+        protected String[] tokens;
 
-        Leaf(String[] pat) {
+        protected Leaf(String[] pat) {
             this.tokens = pat;
         }
 
         @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
-            Token token = lexer.poll();
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
+            Token token = lexer.read();
 
             if (token.isIdentifier()) {
                 for (String t : tokens) {
@@ -401,18 +310,18 @@ public class BnfCom {
         }
 
         /**
-         * add final node
+         * 添加终结符
          *
          * @param list  list
-         * @param token Token
+         * @param token 终结符对应token
          */
         protected void find(List<AstNode> list, Token token) {
             list.add(new AstLeaf(token));
         }
 
         @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
-            Token token = lexer.element();
+        protected boolean match(JustLexer lexer) throws ParseException {
+            Token token = lexer.peek(0);
 
             if (token.isIdentifier()) {
                 for (String t : tokens) {
@@ -428,15 +337,16 @@ public class BnfCom {
 
     protected static class Skip extends Leaf {
 
-        Skip(String[] pat) {
+        protected Skip(String[] pat) {
             super(pat);
         }
 
         /**
-         * Skip Node
+         * 所谓Skip 不添加节点
+         * 比如一些格式控制符号是不算做节点的
          *
          * @param list  list
-         * @param token Token
+         * @param token token
          */
         @Override
         protected void find(List<AstNode> list, Token token) {
@@ -483,16 +393,16 @@ public class BnfCom {
     }
 
     /**
-     * Expr Tree
+     * 表达式子树
      */
     protected static class Expr extends Element {
-        Factory factory;
+        protected Factory factory;
 
-        Operators ops;
+        protected Operators ops;
 
-        BnfCom factor;
+        protected BnfCom factor;
 
-        Expr(Class<? extends AstNode> clazz, BnfCom factor, Operators ops) {
+        public Expr(Class<? extends AstNode> clazz, BnfCom factor, Operators ops) {
 
             this.factory = Factory.getForAstList(clazz);
             this.factor = factor;
@@ -500,7 +410,7 @@ public class BnfCom {
         }
 
         @Override
-        protected void parse(Queue<Token> lexer, List<AstNode> nodes) throws ParseException {
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
             AstNode right = factor.parse(lexer);
 
             Precedence prec;
@@ -512,35 +422,14 @@ public class BnfCom {
             nodes.add(right);
         }
 
-        private AstNode doShift(Queue<Token> lexer, AstNode left, int prec) throws ParseException {
+        private AstNode doShift(JustLexer lexer, AstNode left, int prec) throws ParseException {
             ArrayList<AstNode> list = new ArrayList<>();
 
             list.add(left);
             // 读取一个符号
-            list.add(new Operator(lexer.poll()));
-//            Token operatorToken = lexer.read();
+            list.add(new AstLeaf(lexer.read()));
             // 返回节点放在右子树
             AstNode right = factor.parse(lexer);
-//            AstNode right = factor.parse(lexer);
-
-//            Precedence operatorPrecedence = ops.get(operatorToken.getText());
-//
-//            if (operatorPrecedence != null) {
-//
-//                // operatorExpr local operator list
-//                //      |
-//                //    / | \
-//                // left op right
-//                List<AstNode> operatorList = new ArrayList<>();
-//                operatorList.add(left);
-//                operatorList.add(new AstLeaf(operatorToken));
-//                operatorList.add(right);
-//
-//                // make operatorExpr node
-//                right = operatorPrecedence.factory.make(operatorList);
-//            } else {
-//                throw new ParseException("UnSupport Operators : " + operatorToken.getText());
-//            }
 
             Precedence next;
             // 子树向右拓展
@@ -554,17 +443,17 @@ public class BnfCom {
         }
 
         /**
-         * get next operator
+         * 那取下一个符号
          *
-         * @param lexer JustLexer
-         * @return Symbol Operator
+         * @param lexer 词法
+         * @return 符号
          * @throws ParseException
          */
-        private Precedence nextOperator(Queue<Token> lexer) throws ParseException {
-            Token token = lexer.element();
+        private Precedence nextOperator(JustLexer lexer) throws ParseException {
+            Token token = lexer.peek(0);
 
             if (token.isIdentifier()) {
-                // get symbol
+                // 从符号表里找对应的符号
                 return ops.get(token.getText());
             } else {
                 return null;
@@ -572,10 +461,10 @@ public class BnfCom {
         }
 
         /**
-         * compare left's priority and right's priority
+         * 比较和右侧符号的结合性
          *
-         * @param prec     priority
-         * @param nextPrec next symbol
+         * @param prec     优先级
+         * @param nextPrec 下一个符号的优先级
          * @return tof?
          */
         private static boolean rightIsExpr(int prec, Precedence nextPrec) {
@@ -587,15 +476,15 @@ public class BnfCom {
         }
 
         @Override
-        protected boolean match(Queue<Token> lexer) throws ParseException {
+        protected boolean match(JustLexer lexer) throws ParseException {
             return factor.match(lexer);
         }
     }
 
     /**
-     * default factory function name
+     * 创建方法的方法名
      */
-    private static final String factoryName = "create";
+    public static final String factoryName = "create";
 
     public abstract static class Factory {
 
@@ -612,13 +501,13 @@ public class BnfCom {
         }
 
         /**
-         * create ast list
+         * 直接创建一个AstList
          *
-         * @param clazz class file
-         * @return reflect factory
+         * @param clazz 创建类
+         * @return 工厂
          */
-        @SuppressWarnings("unchecked")
-        private static Factory getForAstList(Class<? extends AstNode> clazz) {
+
+        protected static Factory getForAstList(Class<? extends AstNode> clazz) {
             Factory f = get(clazz, List.class);
 
             if (f == null) {
@@ -646,16 +535,15 @@ public class BnfCom {
          * @param argType 参数 也是一个类
          * @return 工厂
          */
-        @SuppressWarnings("unchecked")
-        static Factory get(Class<? extends AstNode> clazz,
-                           Class<?> argType) {
+        protected static Factory get(Class<? extends AstNode> clazz,
+                                     Class<?> argType) {
             if (clazz == null) {
                 return null;
             }
 
-            // call create function
+            // 这是调用了对象的create函数
             try {
-                final Method m = clazz.getMethod(factoryName, argType);
+                final Method m = clazz.getMethod(factoryName, new Class<?>[]{argType});
 
                 return new Factory() {
                     @Override
@@ -663,10 +551,11 @@ public class BnfCom {
                         return (AstNode) m.invoke(null, arg);
                     }
                 };
-            } catch (NoSuchMethodException ignored) {
+
+            } catch (NoSuchMethodException e) {
             }
 
-            // call constructor
+            // 调用对象的构造
             try {
                 final Constructor<? extends AstNode> c = clazz.getConstructor(argType);
 
@@ -676,6 +565,7 @@ public class BnfCom {
                         return c.newInstance(arg);
                     }
                 };
+
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
@@ -683,41 +573,41 @@ public class BnfCom {
     }
 
     /**
-     * elements set
+     * 存储全部的BNF表达式
      */
-    private List<Element> elements;
+    protected List<Element> elements;
 
     /**
-     * reflect factory
+     * 构建工厂类
      */
-    private Factory factory;
+    protected Factory factory;
 
-    private BnfCom(Class<? extends AstNode> clazz) {
+    public BnfCom(Class<? extends AstNode> clazz) {
         reset(clazz);
     }
 
-    private BnfCom(BnfCom parser) {
+    protected BnfCom(BnfCom parser) {
         elements = parser.elements;
         factory = parser.factory;
     }
 
     /**
-     * parser
+     * 分析处理
      *
-     * @param lexer lexer => node
-     * @return AstNode
+     * @param lexer 词法分析
+     * @return 节点
      * @throws ParseException
      */
-    public AstNode parse(Queue<Token> lexer) throws ParseException {
+    public AstNode parse(JustLexer lexer) throws ParseException {
         ArrayList<AstNode> results = new ArrayList<>();
         for (Element e : elements) {
             e.parse(lexer, results);
         }
-
         return factory.make(results);
     }
 
-    private boolean match(Queue<Token> lexer) throws ParseException {
+
+    protected boolean match(JustLexer lexer) throws ParseException {
         if (elements.size() == 0) {
             return true;
         } else {
@@ -727,7 +617,7 @@ public class BnfCom {
     }
 
     /**
-     * reset => expr
+     * 初始化 / 新定义一个一条产生式
      *
      * @return Ast
      */
@@ -736,9 +626,9 @@ public class BnfCom {
     }
 
     /**
-     * reset => expr
+     * 初始化 / 新定义一个一条产生式
      *
-     * @param clazz class file
+     * @param clazz 类
      * @return Ast
      */
     public static BnfCom rule(Class<? extends AstNode> clazz) {
@@ -757,12 +647,13 @@ public class BnfCom {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // add token combinator
+    // 添加识别各种Token的方法
     ///////////////////////////////////////////////////////////////////////////
 
     public BnfCom number() {
         return number(null);
     }
+
 
     public BnfCom number(Class<? extends AstLeaf> clazz) {
         elements.add(new NumToken(clazz));
@@ -816,7 +707,10 @@ public class BnfCom {
     }
 
     /**
-     * add final token
+     * 添加非终结符
+     *
+     * @param pat
+     * @return
      */
     public BnfCom token(String... pat) {
         elements.add(new Leaf(pat));
@@ -824,10 +718,10 @@ public class BnfCom {
     }
 
     /**
-     * insert skip symbol
+     * 插入符号
      *
-     * @param pat str
-     * @return bnf
+     * @param pat 符号
+     * @return 这种格式的符号(跳
      */
     public BnfCom sep(String... pat) {
         elements.add(new Skip(pat));
@@ -835,7 +729,7 @@ public class BnfCom {
     }
 
     /**
-     * insert sub tree
+     * 插入一棵子树
      *
      * @param parser BNF
      * @return BNF
@@ -846,7 +740,7 @@ public class BnfCom {
     }
 
     /**
-     * insert sub-multi tree
+     * 多个对象传入or树
      *
      * @param parsers BNF
      * @return BNF
@@ -884,11 +778,6 @@ public class BnfCom {
      */
     public BnfCom repeat(BnfCom parser) {
         elements.add(new Repeat(parser, false));
-        return this;
-    }
-
-    public BnfCom wrap(String... pat) {
-        elements.add(new WrapToken(pat));
         return this;
     }
 
