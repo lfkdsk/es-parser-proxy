@@ -24,8 +24,8 @@ public class StringLiteral extends Literal {
 
 //    @Override
 //    public Object eval(JustContext env) {
-//        if (!isNull(value())) {
-//            return value();
+//        if (!isNull(literal())) {
+//            return literal();
 //        }
 //
 //        return super.eval(env);
@@ -33,6 +33,6 @@ public class StringLiteral extends Literal {
 //
 //    @Override
 //    public String compile(JustContext env) {
-//        return "(\"" + value() + "\")";
+//        return "(\"" + literal() + "\")";
 //    }
 }

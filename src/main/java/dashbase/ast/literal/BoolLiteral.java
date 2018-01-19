@@ -35,6 +35,6 @@ public class BoolLiteral extends Literal {
 
 //    @Override
 //    public Object eval(JustContext env) {
-//        return value() ? Boolean.TRUE : Boolean.FALSE;
+//        return literal() ? Boolean.TRUE : Boolean.FALSE;
 //    }
 }

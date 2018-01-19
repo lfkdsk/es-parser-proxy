@@ -11,7 +11,7 @@ public class AstArrayProperty extends Property {
         super(children, Tokens.AST_ARRAY_PROPERTY);
     }
 
-    public Object value() {
-        return null;
+    public AstArray array() {
+        return (AstArray) child(1);
     }
 }

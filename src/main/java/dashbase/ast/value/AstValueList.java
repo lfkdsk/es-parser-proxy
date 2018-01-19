@@ -10,7 +10,7 @@ import java.util.List;
  * "lfkdsk": [
  * <p>
  * ]
- * [] is value-list
+ * [] is literal-list
  */
 public class AstValueList extends QueryAstList {
     public AstValueList(List<AstNode> children) {

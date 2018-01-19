@@ -91,7 +91,7 @@ public class SkipList<K extends Comparable<K>, V> implements Map<K, V> {
         }
 
         SkipListNode<K, V> p = findNodeByKey(key);
-        // change value | equal key
+        // change literal | equal key
         if (key.equals(p.key)) {
             p.value = value;
             return value;
@@ -420,7 +420,7 @@ public class SkipList<K extends Comparable<K>, V> implements Map<K, V> {
         public String toString() {
             return "SkipListNode{" +
                     "key=" + key +
-                    ", value=" + value +
+                    ", literal=" + value +
                     '}';
         }
     }

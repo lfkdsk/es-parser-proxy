@@ -1,6 +1,7 @@
 package dashbase.utils;
 
 import dashbase.ast.base.AstNode;
+import dashbase.ast.primary.AstPrimary;
 import dashbase.ast.property.AstProperty;
 
 public class GrammarHelper {
@@ -12,6 +13,9 @@ public class GrammarHelper {
             if (child instanceof AstProperty) {
                 // remove AstProperty.java Level
                 root.resetChild(i, ((AstProperty) child).property());
+            } else if (child instanceof AstPrimary) {
+                // remove AstPrimary.java Level
+                root.resetChild(i, ((AstPrimary) child).literal());
             }
             transformAst(child);
         }

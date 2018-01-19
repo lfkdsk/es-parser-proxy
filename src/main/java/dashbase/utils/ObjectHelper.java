@@ -18,7 +18,7 @@ public final class ObjectHelper {
     /**
      * Verifies if the object is not null and returns it or throws a NullPointerException
      * with the given message.
-     * @param <T> the value type
+     * @param <T> the literal type
      * @param object the object to verify
      * @param message the message to use with the NullPointerException
      * @return the object itself
@@ -52,8 +52,8 @@ public final class ObjectHelper {
 
     /**
      * Compares two integer values similar to Integer.compare.
-     * @param v1 the first value
-     * @param v2 the second value
+     * @param v1 the first literal
+     * @param v2 the second literal
      * @return the comparison result
      */
     public static int compare(int v1, int v2) {
@@ -62,8 +62,8 @@ public final class ObjectHelper {
 
     /**
      * Compares two integer values similar to Long.compare.
-     * @param v1 the first value
-     * @param v2 the second value
+     * @param v1 the first literal
+     * @param v2 the second literal
      * @return the comparison result
      */
     public static int compare(long v1, long v2) {
@@ -74,7 +74,7 @@ public final class ObjectHelper {
 
     /**
      * Returns a BiPredicate that compares its parameters via Objects.equals().
-     * @param <T> the value type
+     * @param <T> the literal type
      * @return the bi-predicate instance
      */
     @SuppressWarnings("unchecked")
@@ -83,11 +83,11 @@ public final class ObjectHelper {
     }
 
     /**
-     * Validate that the given value is positive or report an IllegalArgumentException with
+     * Validate that the given literal is positive or report an IllegalArgumentException with
      * the parameter name.
-     * @param value the value to validate
-     * @param paramName the parameter name of the value
-     * @return value
+     * @param value the literal to validate
+     * @param paramName the parameter name of the literal
+     * @return literal
      * @throws IllegalArgumentException if bufferSize &lt;= 0
      */
     public static int verifyPositive(int value, String paramName) {
@@ -98,11 +98,11 @@ public final class ObjectHelper {
     }
 
     /**
-     * Validate that the given value is positive or report an IllegalArgumentException with
+     * Validate that the given literal is positive or report an IllegalArgumentException with
      * the parameter name.
-     * @param value the value to validate
-     * @param paramName the parameter name of the value
-     * @return value
+     * @param value the literal to validate
+     * @param paramName the parameter name of the literal
+     * @return literal
      * @throws IllegalArgumentException if bufferSize &lt;= 0
      */
     public static long verifyPositive(long value, String paramName) {

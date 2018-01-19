@@ -165,7 +165,7 @@ public final class NumberUtils {
      *
      * @param num1 n1
      * @param num2 n2
-     * @return & value
+     * @return & literal
      */
     public static Object computeAmpersandValue(Number num1, Number num2) {
         return castTokenValue((long) computeValue(num1) & (long) computeValue(num2),

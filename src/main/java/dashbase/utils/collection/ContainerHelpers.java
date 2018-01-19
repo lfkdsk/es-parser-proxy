@@ -55,10 +55,10 @@ class ContainerHelpers {
             } else if (midVal > value) {
                 hi = mid - 1;
             } else {
-                return mid;  // value found
+                return mid;  // literal found
             }
         }
-        return ~lo;  // value not present
+        return ~lo;  // literal not present
     }
 
     static int binarySearch(long[] array, int size, long value) {
@@ -74,9 +74,9 @@ class ContainerHelpers {
             } else if (midVal > value) {
                 hi = mid - 1;
             } else {
-                return mid;  // value found
+                return mid;  // literal found
             }
         }
-        return ~lo;  // value not present
+        return ~lo;  // literal not present
     }
 }

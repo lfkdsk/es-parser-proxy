@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * ArrayMap is a generic key->value mapping data structure that is
+ * ArrayMap is a generic key->literal mapping data structure that is
  * designed to be more memory efficient than a traditional {@link java.util.HashMap}.
  * It keeps its mappings in an array data structure -- an integer array of hash
- * codes for each item, and an Object array of the key/value pairs.  This allows it to
+ * codes for each item, and an Object array of the key/literal pairs.  This allows it to
  * avoid having to create an extra object for every entry put in to the map, and it
  * also tries to control the growth of the size of these arrays more aggressively
  * (since growing them only requires copying the entries in the array, not rebuilding
@@ -46,7 +46,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     private static final int CACHE_SIZE = 10;
 
     /**
-     * Special hash array value that indicates the container is immutable.
+     * Special hash array literal that indicates the container is immutable.
      */
     static final int[] EMPTY_IMMUTABLE_INTS = new int[0];
 
@@ -103,7 +103,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
             if (key.equals(mArray[i << 1])) return i;
         }
 
-        // Key not found -- return negative value indicating where a
+        // Key not found -- return negative literal indicating where a
         // new entry for this key should go.  We use the end of the
         // hash chain to reduce the number of array entries that will
         // need to be copied when inserting.
@@ -141,7 +141,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
             if (null == mArray[i << 1]) return i;
         }
 
-        // Key not found -- return negative value indicating where a
+        // Key not found -- return negative literal indicating where a
         // new entry for this key should go.  We use the end of the
         // hash chain to reduce the number of array entries that will
         // need to be copied when inserting.
@@ -350,11 +350,11 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Check whether a value exists in the array.  This requires a linear search
+     * Check whether a literal exists in the array.  This requires a linear search
      * through the entire array.
      *
-     * @param value The value to search for.
-     * @return Returns true if the value exists, else false.
+     * @param value The literal to search for.
+     * @return Returns true if the literal exists, else false.
      */
     @Override
     public boolean containsValue(Object value) {
@@ -362,10 +362,10 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Retrieve a value from the array.
+     * Retrieve a literal from the array.
      *
-     * @param key The key of the value to retrieve.
-     * @return Returns the value associated with the given key,
+     * @param key The key of the literal to retrieve.
+     * @return Returns the literal associated with the given key,
      * or null if there is no such key.
      */
     @Override
@@ -385,21 +385,21 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Return the value at the given index in the array.
+     * Return the literal at the given index in the array.
      *
      * @param index The desired index, must be between 0 and {@link #size()}-1.
-     * @return Returns the value stored at the given index.
+     * @return Returns the literal stored at the given index.
      */
     public V valueAt(int index) {
         return (V) mArray[(index << 1) + 1];
     }
 
     /**
-     * Set the value at a given index in the array.
+     * Set the literal at a given index in the array.
      *
      * @param index The desired index, must be between 0 and {@link #size()}-1.
-     * @param value The new value to store at this index.
-     * @return Returns the previous value at the given index.
+     * @param value The new literal to store at this index.
+     * @return Returns the previous literal at the given index.
      */
     public V setValueAt(int index, V value) {
         index = (index << 1) + 1;
@@ -417,12 +417,12 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Add a new value to the array map.
+     * Add a new literal to the array map.
      *
-     * @param key   The key under which to store the value.  If
-     *              this key already exists in the array, its value will be replaced.
-     * @param value The value to store for the given key.
-     * @return Returns the old value that was stored for the given key, or null if there
+     * @param key   The key under which to store the literal.  If
+     *              this key already exists in the array, its literal will be replaced.
+     * @param value The literal to store for the given key.
+     * @return Returns the old literal that was stored for the given key, or null if there
      * was no such key.
      */
     @Override
@@ -546,7 +546,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Perform a {@link #put(Object, Object)} of all key/value pairs in <var>array</var>
+     * Perform a {@link #put(Object, Object)} of all key/literal pairs in <var>array</var>
      *
      * @param array The array whose contents are to be retrieved.
      */
@@ -570,7 +570,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
      * Remove an existing key from the array map.
      *
      * @param key The key of the mapping to remove.
-     * @return Returns the value that was stored under the key, or null if there
+     * @return Returns the literal that was stored under the key, or null if there
      * was no such key.
      */
     @Override
@@ -584,10 +584,10 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Remove the key/value mapping at the given index.
+     * Remove the key/literal mapping at the given index.
      *
      * @param index The desired index, must be between 0 and {@link #size()}-1.
-     * @return Returns the value that was stored at this index.
+     * @return Returns the literal that was stored at this index.
      */
     public V removeAt(int index) {
         final Object old = mArray[(index << 1) + 1];
@@ -709,7 +709,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
      * {@inheritDoc}
      * <p>
      * <p>This implementation composes a string by iterating over its mappings. If
-     * this map contains itself as a key or a value, the string "(this Map)"
+     * this map contains itself as a key or a literal, the string "(this Map)"
      * will appear in its place.
      */
     @Override
@@ -811,7 +811,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Perform a {@link #put(Object, Object)} of all key/value pairs in <var>map</var>
+     * Perform a {@link #put(Object, Object)} of all key/literal pairs in <var>map</var>
      *
      * @param map The map whose contents are to be retrieved.
      */
