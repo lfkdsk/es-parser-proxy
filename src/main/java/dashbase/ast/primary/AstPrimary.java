@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * AstPrimary 指的就是具体的值类型
  * 支持的值类型有 string | bool | number (int/float/long/double)
- *
  * @author liufengkai
  */
 public class AstPrimary extends QueryAstList {
@@ -29,7 +28,7 @@ public class AstPrimary extends QueryAstList {
     }
 
     public Object value() {
-        return literal().name();
+        return literal().value();
     }
 
     public PrimaryType type() {

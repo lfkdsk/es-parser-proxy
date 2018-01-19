@@ -10,4 +10,8 @@ public class AstArrayProperty extends Property {
     public AstArrayProperty(List<AstNode> children) {
         super(children, Tokens.AST_ARRAY_PROPERTY);
     }
+
+    public Object value() {
+        return null;
+    }
 }

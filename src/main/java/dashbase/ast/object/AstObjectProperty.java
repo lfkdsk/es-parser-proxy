@@ -10,4 +10,8 @@ public class AstObjectProperty extends Property {
     public AstObjectProperty(List<AstNode> children) {
         super(children, Tokens.AST_OBJECT_PROPERTY);
     }
+
+    public AstObject object() {
+        return (AstObject) child(1);
+    }
 }

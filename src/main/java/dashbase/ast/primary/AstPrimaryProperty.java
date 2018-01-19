@@ -10,4 +10,8 @@ public class AstPrimaryProperty extends Property {
     public AstPrimaryProperty(List<AstNode> children) {
         super(children, Tokens.AST_PRIMARY_PROPERTY);
     }
+
+    public Object value() {
+        return ((AstPrimary) valueNode()).value();
+    }
 }

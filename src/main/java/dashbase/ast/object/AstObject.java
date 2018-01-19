@@ -2,10 +2,11 @@ package dashbase.ast.object;
 
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
-import dashbase.ast.property.AstProperty;
 import dashbase.ast.property.AstPropertyList;
+import dashbase.ast.property.Property;
 import dashbase.token.Tokens;
 
+import java.util.Collections;
 import java.util.List;
 
 public class AstObject extends QueryAstList {
@@ -14,10 +15,15 @@ public class AstObject extends QueryAstList {
     }
 
     public AstPropertyList propertyList() {
-        return (AstPropertyList) child(0);
+        if (child(0) instanceof AstPropertyList) {
+            return (AstPropertyList) child(0);
+        }
+        // empty list
+
+        return new AstPropertyList(Collections.emptyList());
     }
 
-    public AstProperty property(String name) {
+    public Property property(String name) {
         return propertyList().child(name);
     }
 }

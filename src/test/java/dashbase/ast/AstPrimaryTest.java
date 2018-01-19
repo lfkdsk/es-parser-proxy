@@ -8,6 +8,11 @@ import org.junit.Test;
 import static dashbase.TestUtils.runGrammar;
 
 public class AstPrimaryTest {
+
+    /**
+     * Ast Structure
+     * problem - object - property-list - properties
+     */
     @Test
     public void testPrimaryFunction() {
         JsonObject object = new JsonObject();
@@ -19,6 +24,10 @@ public class AstPrimaryTest {
         Assert.assertNotNull(program);
         Assert.assertEquals(program.object().propertyList().childCount(), 3);
         Assert.assertNotNull(program.object());
+
+        Assert.assertEquals(program.object().property("1").type(), AstProperty.PropertyType.PRIMARY);
+        Assert.assertEquals(program.object().property("2").type(), AstProperty.PropertyType.PRIMARY);
+        Assert.assertEquals(program.object().property("3").type(), AstProperty.PropertyType.PRIMARY);
 
         Assert.assertEquals(program.object().property("1").type(), AstProperty.PropertyType.PRIMARY);
         Assert.assertEquals(program.object().property("2").type(), AstProperty.PropertyType.PRIMARY);

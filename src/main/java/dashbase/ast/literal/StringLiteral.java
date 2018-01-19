@@ -9,7 +9,7 @@ import dashbase.token.Token;
  * - "\"lfkdsk\""
  *
  * @author liufengkai
- *         Created by liufengkai on 2017/7/18.
+ * Created by liufengkai on 2017/7/18.
  */
 public class StringLiteral extends Literal {
 

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Property Parent Node
  * property := primary | object | array
- *
+ * 这个类不会出现在 AST 结构当中
  * @author liufengkai
  * @see dashbase.ast.primary.AstPrimaryProperty
  * @see dashbase.ast.object.AstObjectProperty

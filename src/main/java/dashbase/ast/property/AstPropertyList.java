@@ -5,7 +5,9 @@ import dashbase.ast.base.AstNode;
 import dashbase.ast.env.Context;
 import dashbase.token.Tokens;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Use is { } object
@@ -17,20 +19,19 @@ import java.util.List;
  * @author liufengkai
  */
 public class AstPropertyList extends QueryAstList {
+    private Map<String, Property> properties = new HashMap<>();
+
     public AstPropertyList(List<AstNode> children) {
         super(children, Tokens.PROPERTY_LIST);
+
+        for (AstNode child : children) {
+            Property property = ((AstProperty) child).property();
+            properties.put(property.keyNode().value(), property);
+        }
     }
 
     public Property child(String name) {
-        for (AstNode node : this) {
-            Property property = (Property) node;
-
-            if (property.keyNode().value().equals(name)) {
-                return property;
-            }
-        }
-
-        return null;
+        return properties.get(name);
     }
 
     @Override
