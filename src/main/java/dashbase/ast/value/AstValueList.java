@@ -16,4 +16,8 @@ public class AstValueList extends QueryAstList {
     public AstValueList(List<AstNode> children) {
         super(children, Tokens.VALUE_LIST);
     }
+
+    public AstValue get(int index) {
+        return (AstValue) child(index);
+    }
 }
