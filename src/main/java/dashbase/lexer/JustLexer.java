@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 import static dashbase.lexer.JustRegex.hobbyReg;
 import static dashbase.token.ReservedToken.reservedToken;
-import static dashbase.token.SepToken.sepTokens;
 import static dashbase.utils.tools.TextUtils.toStringLiteral;
 
 /**
@@ -38,6 +37,16 @@ public class JustLexer {
 
     private LineNumberReader reader;
 
+    private int lineNumber;
+
+    private JustLexer backup;
+
+    private JustLexer(JustLexer lexer) {
+        this.queue = new LinkedList<>(lexer.queue);
+        this.hasMore = lexer.hasMore;
+        this.lineNumber = lexer.reader.getLineNumber();
+    }
+
     /**
      * 构造
      *
@@ -46,6 +55,7 @@ public class JustLexer {
     public JustLexer(Reader reader) {
         this.hasMore = true;
         this.reader = new LineNumberReader(reader);
+        this.lineNumber = this.reader.getLineNumber();
         this.initial();
     }
 
@@ -126,7 +136,7 @@ public class JustLexer {
             return;
         }
 
-        int lineNum = reader.getLineNumber();
+        int lineNum = this.lineNumber = reader.getLineNumber();
 
         Matcher matcher = regPattern.matcher(line);
 
@@ -241,11 +251,7 @@ public class JustLexer {
                 return;
             }
 
-            if (sepTokens.containsKey(symbol)) {
-                queue.add(sepTokens.get(symbol));
-            } else {
-                queue.add(new SepToken(lineNum, -1, symbol));
-            }
+            queue.add(new SepToken(lineNum, -1, symbol));
         }
     }
 
@@ -263,4 +269,16 @@ public class JustLexer {
         return queue;
     }
 
+    public void backup() {
+        this.backup = new JustLexer(this);
+    }
+
+    public void recover() {
+        if (backup != null) {
+            this.reader.setLineNumber(backup.lineNumber);
+            this.queue = new LinkedList<>(backup.queue);
+            this.lineNumber = backup.lineNumber;
+            this.hasMore = backup.hasMore;
+        }
+    }
 }

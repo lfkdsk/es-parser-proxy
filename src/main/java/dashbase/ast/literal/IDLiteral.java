@@ -9,7 +9,6 @@
 package dashbase.ast.literal;
 
 
-import dashbase.exception.EvalException;
 import dashbase.token.Token;
 
 /**
@@ -25,5 +24,8 @@ public class IDLiteral extends Literal {
         super(token);
     }
 
-
+    @Override
+    public Object value() {
+        return token.getText();
+    }
 }

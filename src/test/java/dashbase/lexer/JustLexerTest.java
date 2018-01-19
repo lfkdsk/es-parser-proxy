@@ -10,8 +10,8 @@ public class JustLexerTest {
 
     @Test
     public void testTokens() {
-        Queue<Token> tokens = new JustLexer("tokens tokens").tokens();
+        Queue<Token> tokens = new JustLexer("tokens tokens \"lfkdsk\" true 100 100.101e-100").tokens();
         Assert.assertNotNull(tokens);
-        Assert.assertEquals(tokens.size(), 2);
+        Assert.assertEquals(tokens.size(), 6);
     }
 }

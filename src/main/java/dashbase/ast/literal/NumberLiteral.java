@@ -4,6 +4,8 @@ import dashbase.exception.ParseException;
 import dashbase.token.NumberToken;
 import dashbase.token.Token;
 
+import static dashbase.utils.NumberUtils.castTokenValue;
+
 /**
  * Number Literal.
  * We support two kinds of Number Value :
@@ -31,6 +33,11 @@ public class NumberLiteral extends Literal {
             throw new ParseException("UnSupport number name where token " +
                     "type is not NumberToken");
         }
+    }
+
+    @Override
+    public Number value() {
+        return castTokenValue(numberToken());
     }
 
     @Override

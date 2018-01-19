@@ -28,7 +28,8 @@ public class BoolLiteral extends Literal {
         super(token);
     }
 
-    public boolean value() {
+    @Override
+    public Boolean value() {
         return booleanValue(token.getText()) == TRUE;
     }
 

@@ -12,7 +12,8 @@ public class AstQueryProgram extends QueryAstList {
     }
 
     public QueryAstList program() {
-        return (QueryAstList) this.child(0);
+        // starter is an object-label
+        return (QueryAstList) this.child(0).child(0);
     }
 
 }

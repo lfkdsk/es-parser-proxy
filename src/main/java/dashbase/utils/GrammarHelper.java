@@ -1,13 +1,13 @@
 package dashbase.utils;
 
-import dashbase.ast.AstInnerLabelExpr;
+import dashbase.ast.primary.AstPrimaryProperty;
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
 import dashbase.bnf.BnfCom;
 
 public class GrammarHelper {
 
-    private static AstNode resetAstExpr(AstInnerLabelExpr expr, BnfCom.Operators operators) {
+    private static AstNode resetAstExpr(AstPrimaryProperty expr, BnfCom.Operators operators) {
         String operator = expr.child(0).toString();
         BnfCom.Precedence precedence = operators.get(operator);
         if (precedence == null) {
@@ -23,8 +23,8 @@ public class GrammarHelper {
     public static AstNode transformAst(AstNode root, BnfCom.Operators operators) {
         for (int i = 0; i < root.childCount(); ++i) {
             AstNode child = root.child(i);
-            if (child instanceof AstInnerLabelExpr) {
-                child = resetAstExpr((AstInnerLabelExpr) child, operators);
+            if (child instanceof AstPrimaryProperty) {
+                child = resetAstExpr((AstPrimaryProperty) child, operators);
                 root.resetChild(i, child);
             }
 

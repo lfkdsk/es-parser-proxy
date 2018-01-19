@@ -111,6 +111,50 @@ public class BnfCom {
     }
 
 
+    protected static class PrefixTree extends Element {
+        protected BnfCom[] parsers;
+
+        public PrefixTree(BnfCom[] parsers) {
+            this.parsers = parsers;
+        }
+
+        @Override
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
+            Queue<BnfCom> parsers = choose(lexer);
+            lexer.backup();
+            while (parsers != null && !parsers.isEmpty()) {
+                BnfCom parser = parsers.poll();
+                AstNode node;
+
+                try {
+                    node = parser.parse(lexer);
+                    nodes.add(node);
+                    break;
+                } catch (ParseException e) {
+                    lexer.recover();
+                }
+            }
+        }
+
+        @Override
+        protected boolean match(JustLexer lexer) throws ParseException {
+            return choose(lexer) != null;
+        }
+
+        protected Queue<BnfCom> choose(JustLexer lexer) throws ParseException {
+            Queue<BnfCom> chooses = new LinkedList<>();
+
+            for (BnfCom parser : parsers) {
+                if (parser.match(lexer)) {
+                    chooses.add(parser);
+                }
+            }
+
+            return chooses.isEmpty() ? null : chooses;
+        }
+    }
+
+
     /**
      * 重复出现的语句节点
      * 比如block中会出现多次的simple
@@ -789,6 +833,11 @@ public class BnfCom {
     public BnfCom expression(Class<? extends AstNode> clazz, BnfCom subExp,
                              Operators operators) {
         elements.add(new Expr(clazz, subExp, operators));
+        return this;
+    }
+
+    public BnfCom prefix(BnfCom... parsers) {
+        elements.add(new PrefixTree(parsers));
         return this;
     }
 

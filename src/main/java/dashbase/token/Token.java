@@ -1,5 +1,8 @@
 package dashbase.token;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Basic Token && Token Tag
  *
@@ -126,6 +129,8 @@ public class Token {
      */
     public static final String EOL = "\\n";
 
+    @Setter
+    @Getter
     protected int lineNumber;
 
     protected int tag;

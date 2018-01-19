@@ -1,12 +1,13 @@
-package dashbase.ast;
+package dashbase.ast.object;
 
+import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
 import dashbase.token.Tokens;
 
 import java.util.List;
 
-public class AstObjectLabel extends QueryAstList {
-    public AstObjectLabel(List<AstNode> children) {
+public class AstObject extends QueryAstList {
+    public AstObject(List<AstNode> children) {
         super(children, Tokens.AST_OBJECT_LABEL);
     }
 

@@ -17,6 +17,7 @@ public class StringLiteral extends Literal {
         super(token);
     }
 
+    @Override
     public String value() {
         return token.getText();
     }
