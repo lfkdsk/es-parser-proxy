@@ -1,6 +1,7 @@
 package dashbase.ast;
 
 import com.google.gson.JsonObject;
+import dashbase.ast.property.AstProperty;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +17,11 @@ public class AstPrimaryTest {
         AstQueryProgram program = runGrammar(object.toString());
 
         Assert.assertNotNull(program);
-        Assert.assertEquals(program.program().childCount(), 3);
+        Assert.assertEquals(program.object().propertyList().childCount(), 3);
+        Assert.assertNotNull(program.object());
 
+        Assert.assertEquals(program.object().property("1").type(), AstProperty.PropertyType.PRIMARY);
+        Assert.assertEquals(program.object().property("2").type(), AstProperty.PropertyType.PRIMARY);
+        Assert.assertEquals(program.object().property("3").type(), AstProperty.PropertyType.PRIMARY);
     }
 }

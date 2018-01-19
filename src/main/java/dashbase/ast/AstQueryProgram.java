@@ -1,6 +1,7 @@
 package dashbase.ast;
 
 import dashbase.ast.base.AstNode;
+import dashbase.ast.object.AstObject;
 import dashbase.token.Tokens;
 
 import java.util.List;
@@ -11,9 +12,9 @@ public class AstQueryProgram extends QueryAstList {
         super(children, Tokens.QUERY_PROBLEM);
     }
 
-    public QueryAstList program() {
+    public AstObject object() {
         // starter is an object-label
-        return (QueryAstList) this.child(0).child(0);
+        return (AstObject) this.child(0);
     }
 
 }

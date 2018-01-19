@@ -21,6 +21,18 @@ public class AstPropertyList extends QueryAstList {
         super(children, Tokens.PROPERTY_LIST);
     }
 
+    public Property child(String name) {
+        for (AstNode node : this) {
+            Property property = (Property) node;
+
+            if (property.keyNode().value().equals(name)) {
+                return property;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public void eval(Context context) {
         for (AstNode node : this) {

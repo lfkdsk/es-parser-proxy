@@ -10,9 +10,4 @@ public class AstValue extends QueryAstList {
     public AstValue(List<AstNode> children) {
         super(children, Tokens.AST_VALUE);
     }
-
-    @Override
-    public String toString() {
-        return child(0).toString();
-    }
 }

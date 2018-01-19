@@ -21,6 +21,7 @@ import lombok.Getter;
 
 import static dashbase.bnf.BnfCom.rule;
 import static dashbase.token.ReservedToken.reservedToken;
+import static dashbase.utils.GrammarHelper.transformAst;
 
 public class QueryGrammar {
 
@@ -104,7 +105,7 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
     // array property := string : array
     ///////////////////////////////////////////////////////////////////////////
-    
+
     private BnfCom arrayProperty = rule(AstArrayProperty.class).ast(string).sep(":").ast(array);
 
 
@@ -181,7 +182,7 @@ public class QueryGrammar {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // program = {
+    // object = {
     //      valueList
     // } EOL (end of line)
     ///////////////////////////////////////////////////////////////////////////
@@ -189,6 +190,6 @@ public class QueryGrammar {
     private BnfCom program = rule(AstQueryProgram.class).ast(object);
 
     public AstQueryProgram parse(JustLexer lexer) {
-        return (AstQueryProgram) program.parse(lexer);
+        return (AstQueryProgram) transformAst(program.parse(lexer));
     }
 }
