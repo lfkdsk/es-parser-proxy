@@ -3,6 +3,7 @@ package dashbase.bnf;
 import dashbase.ast.base.AstLeaf;
 import dashbase.ast.base.AstList;
 import dashbase.ast.base.AstNode;
+import dashbase.ast.literal.StringLiteral;
 import dashbase.exception.ParseException;
 import dashbase.lexer.JustLexer;
 import dashbase.token.Token;
@@ -15,6 +16,8 @@ import java.util.*;
  * BnfParser 巴克斯范式解析引擎
  *
  * @author liufengkai
+ * @version 1.0
+ * @since 2018.01.20
  */
 public class BnfCom {
 
@@ -320,6 +323,21 @@ public class BnfCom {
         @Override
         protected boolean tokenTest(Token token) {
             return token.isType();
+        }
+    }
+
+    protected static class StableStringToken extends AToken {
+
+        private String value;
+
+        public StableStringToken(String value) {
+            super(StringLiteral.class);
+            this.value = value;
+        }
+
+        @Override
+        protected boolean tokenTest(Token token) {
+            return token.getText().equals(value);
         }
     }
 
@@ -850,6 +868,11 @@ public class BnfCom {
             reset(null);
             or(parser, otherWise);
         }
+        return this;
+    }
+
+    public BnfCom literal(String literal) {
+        elements.add(new StableStringToken(literal));
         return this;
     }
 }

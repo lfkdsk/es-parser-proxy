@@ -224,6 +224,12 @@ public class JustLexer {
         String string = matcher.group("STRING");
 
         if (string != null) {
+
+            if (reservedToken.contains(string)){
+                queue.add(new ReservedToken(lineNum, string));
+                return;
+            }
+
             queue.add(new StringToken(lineNum, toStringLiteral(string)));
 
             return;

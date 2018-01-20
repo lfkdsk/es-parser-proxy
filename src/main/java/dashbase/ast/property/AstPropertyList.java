@@ -24,9 +24,23 @@ public class AstPropertyList extends QueryAstList {
     public AstPropertyList(List<AstNode> children) {
         super(children, Tokens.PROPERTY_LIST);
 
+        // after transformer
         for (AstNode child : children) {
-            Property property = ((AstProperty) child).property();
-            properties.put(property.keyNode().value(), property);
+            int tag = child.getTag();
+            switch (tag) {
+                case Tokens.PROPERTY: {
+                    Property property = ((AstProperty) child).property();
+                    properties.put(property.keyNode().value(), property);
+                    break;
+                }
+                case Tokens.AST_ARRAY_PROPERTY:
+                case Tokens.AST_OBJECT_PROPERTY:
+                case Tokens.AST_PRIMARY_PROPERTY: {
+                    Property property = (Property) child;
+                    properties.put(property.keyNode().value(), property);
+                    break;
+                }
+            }
         }
     }
 

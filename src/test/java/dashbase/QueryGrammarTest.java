@@ -7,10 +7,13 @@ import dashbase.ast.AstQueryProgram;
 import dashbase.ast.base.AstNode;
 import dashbase.lexer.JustLexer;
 import dashbase.rules.QueryGrammar;
+import dashbase.utils.GrammarHelper;
 import dashbase.utils.json.JSONException;
 import dashbase.utils.logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static dashbase.token.ReservedToken.reservedToken;
 
 public class QueryGrammarTest {
 
@@ -77,5 +80,18 @@ public class QueryGrammarTest {
         Logger.init();
         Logger.v(str);
         AstQueryProgram program = TestUtils.runGrammar(str);
+    }
+
+    @Test
+    public void testWrapperObjectProperty() {
+        reservedToken.add("\"query\"");
+        JsonObject problem = new JsonObject();
+        problem.add("query", new JsonObject());
+        problem.add("lfkdsk", new JsonObject());
+        JustLexer lexer = new JustLexer(problem.toString());
+        lexer.tokens();
+        QueryGrammar grammar = new QueryGrammar();
+        AstNode node = GrammarHelper.transformAst(grammar.getWrapperObject().parse(lexer));
+
     }
 }

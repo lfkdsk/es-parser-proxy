@@ -180,6 +180,21 @@ public class QueryGrammar {
 //
 //    private BnfCom innerProgram = rule().maybe(query);
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Special Auto-Generate Parser
+    ///////////////////////////////////////////////////////////////////////////
+
+    private BnfCom wrapperPropertyList = rule(AstPropertyList.class)
+            .option(rule(AstObjectProperty.class).literal("\"query\"").sep(":").ast(object))
+            .option(rule(AstObjectProperty.class).literal("\"lfkdsk\"").sep(":").ast(object))
+            .repeat(
+                    rule().sep(",").repeat(property)
+            );
+
+    @Getter
+    private BnfCom wrapperObject = rule(AstObject.class).sep("{")
+                                                        .maybe(wrapperPropertyList)
+                                                        .sep("}");
 
     ///////////////////////////////////////////////////////////////////////////
     // object = {
