@@ -12,18 +12,4 @@ public class QueryAstList extends AstList {
         super(children, tag);
     }
 
-    @Override
-    public String toString() {
-        if (children.isEmpty()) {
-            return "(empty)";
-        }
-
-        StringBuilder builder = new StringBuilder();
-
-        for (AstNode child : children) {
-            builder.append(child.toString());
-        }
-
-        return builder.toString();
-    }
 }

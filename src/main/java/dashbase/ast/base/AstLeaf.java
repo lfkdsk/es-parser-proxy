@@ -64,10 +64,6 @@ public class AstLeaf extends AstNode {
 
     @Override
     public String toString() {
-        if (evalString == null) {
-            evalString = token.getText();
-        }
-
-        return evalString;
+        return token.getText();
     }
 }

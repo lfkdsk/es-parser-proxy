@@ -37,4 +37,9 @@ public abstract class Property extends QueryAstList {
             }
         }
     }
+
+    @Override
+    public String target() {
+        return keyNode().value();
+    }
 }

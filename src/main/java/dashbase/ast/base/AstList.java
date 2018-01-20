@@ -26,6 +26,12 @@ public class AstList extends AstNode {
     public AstList(List<AstNode> children, int tag) {
         super(tag);
         this.children = children;
+
+        for (int i = 0; i < children.size(); i++) {
+            AstNode child = child(i);
+            child.setParentNode(this);
+            child.setChildIndex(i);
+        }
     }
 
     @Override
@@ -48,28 +54,6 @@ public class AstList extends AstNode {
     }
 
     @Override
-    public String toString() {
-        if (evalString == null) {
-
-            StringBuilder builder = new StringBuilder();
-
-            builder.append('(');
-
-            String sep = "";
-
-            for (AstNode node : children) {
-                builder.append(sep);
-                sep = " ";
-                builder.append(node.toString());
-            }
-
-            evalString = builder.append(")").toString();
-        }
-
-        return evalString;
-    }
-
-    @Override
     public String location() {
         for (AstNode n : children) {
             String s = n.location();
@@ -83,6 +67,23 @@ public class AstList extends AstNode {
     @Override
     public AstNode resetChild(int index, AstNode node) {
         node.setParentNode(this);
+        node.setChildIndex(index);
         return children.set(index, node);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append('(');
+
+        String sep = ",";
+
+        for (AstNode node : children) {
+            builder.append(node.toString());
+            builder.append(sep);
+        }
+
+        return builder.append(")").toString();
     }
 }

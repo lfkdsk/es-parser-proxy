@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * literal := literal | object | property
- *
+ * 中间层 不出现在 AST 中
  * @author liufengkai
  */
 public class AstValue extends QueryAstList {

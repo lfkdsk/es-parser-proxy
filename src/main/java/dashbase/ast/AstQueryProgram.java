@@ -1,6 +1,7 @@
 package dashbase.ast;
 
 import dashbase.ast.base.AstNode;
+import dashbase.ast.env.Context;
 import dashbase.ast.object.AstObject;
 import dashbase.token.Tokens;
 
@@ -17,4 +18,8 @@ public class AstQueryProgram extends QueryAstList {
         return (AstObject) this.child(0);
     }
 
+    @Override
+    public void eval(Context context) {
+        object().eval(context);
+    }
 }

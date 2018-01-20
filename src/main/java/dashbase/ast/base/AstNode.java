@@ -12,6 +12,7 @@ package dashbase.ast.base;
 import dashbase.ast.env.Context;
 import dashbase.ast.env.Evaluable;
 import dashbase.exception.EvalException;
+import dashbase.utils.tools.TextUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +35,7 @@ public abstract class AstNode implements Iterable<AstNode>, Evaluable {
      * index of child
      */
     @Getter
+    @Setter
     protected int childIndex = 0;
 
     /**
@@ -42,12 +44,6 @@ public abstract class AstNode implements Iterable<AstNode>, Evaluable {
     @Getter
     @Setter
     protected AstNode parentNode;
-
-    /**
-     * result => toString
-     */
-    @Getter
-    protected String evalString = null;
 
     /**
      * hashCode => evalString
@@ -97,6 +93,24 @@ public abstract class AstNode implements Iterable<AstNode>, Evaluable {
      * @return node
      */
     public abstract AstNode resetChild(int index, AstNode node);
+
+    public String path() {
+        AstNode node = this;
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.target());
+        while ((node = node.parentNode) != null) {
+            if (!TextUtils.isEmpty(node.target())) {
+                builder.insert(0, node.target() + "/");
+            }
+        }
+
+        return builder.toString();
+    }
+
+    public String target() {
+        return "";
+    }
 
     /**
      * iterator of list

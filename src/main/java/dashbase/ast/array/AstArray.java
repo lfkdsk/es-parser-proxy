@@ -5,6 +5,7 @@ import dashbase.ast.base.AstNode;
 import dashbase.ast.value.AstValueList;
 import dashbase.token.Tokens;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +20,10 @@ public class AstArray extends QueryAstList {
     }
 
     public AstValueList list() {
+        if (child(0).childCount() == 0) {
+            return new AstValueList(Collections.emptyList());
+        }
+
         return (AstValueList) child(0);
     }
 }

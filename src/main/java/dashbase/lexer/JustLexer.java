@@ -190,7 +190,7 @@ public class JustLexer {
             int checkedType;
             Number checkedNum;
 
-            // float
+            // float or double
             if (floatToken.contains(".") || floatToken.contains("e") || floatToken.contains("E")) {
                 checkedNum = NumberUtils.parseDouble(floatToken);
                 checkedType = Token.FLOAT;
@@ -198,7 +198,7 @@ public class JustLexer {
                 if (checkedNum instanceof Double) {
                     checkedType = Token.DOUBLE;
                 }
-            // int
+            // int or long
             } else {
                 checkedNum = NumberUtils.parseLong(floatToken);
                 checkedType = Token.INTEGER;
