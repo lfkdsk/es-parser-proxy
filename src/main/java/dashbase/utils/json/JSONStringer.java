@@ -80,7 +80,7 @@ public class JSONStringer {
 
         /**
          * A array with at least one name requires a comma and newline before
-         * the next element.
+         * the next base.
          */
         NONEMPTY_ARRAY,
 
@@ -91,14 +91,14 @@ public class JSONStringer {
         EMPTY_OBJECT,
 
         /**
-         * An object whose most recent element is a key. The next element must
+         * An object whose most recent base is a key. The next base must
          * be a name.
          */
         DANGLING_KEY,
 
         /**
          * An object with at least one name/name pair requires a comma and
-         * newline before the next element.
+         * newline before the next base.
          */
         NONEMPTY_OBJECT,
 
@@ -396,7 +396,7 @@ public class JSONStringer {
     /**
      * Inserts any necessary separators and whitespace before a literal name,
      * inline array, or inline object. Also adjusts the stack to expect either a
-     * closing bracket or another element.
+     * closing bracket or another base.
      */
     private void beforeValue() throws JSONException {
         if (stack.isEmpty()) {

@@ -22,7 +22,6 @@ import lombok.Getter;
 import static dashbase.bnf.BnfCom.rule;
 import static dashbase.token.ReservedToken.reservedToken;
 import static dashbase.utils.GrammarHelper.transformAst;
-import static dashbase.utils.tools.TextUtils.w;
 
 public class QueryGrammar {
 
@@ -125,6 +124,7 @@ public class QueryGrammar {
     // property : primary | array | object
     ///////////////////////////////////////////////////////////////////////////
 
+    @Getter
     private BnfCom property = rule(AstProperty.class).prefix(
             primaryProperty,
             arrayProperty,
@@ -182,22 +182,6 @@ public class QueryGrammar {
 //
 //    private BnfCom innerProgram = rule().maybe(query);
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Special Auto-Generate Parser
-    ///////////////////////////////////////////////////////////////////////////
-
-    private BnfCom wrapperPropertyList = rule(AstPropertyList.class)
-            .option(rule(AstObjectProperty.class).literal(w("query")).sep(":").ast(object).maybe(","))
-            .option(rule(AstObjectProperty.class).literal(w("lfkdsk")).sep(":").ast(object).maybe(","))
-            .ast(property)
-            .repeat(
-                    rule().sep(",").repeat(property)
-            );
-
-    @Getter
-    private BnfCom wrapperObject = rule(AstObject.class).sep("{")
-                                                        .maybe(wrapperPropertyList)
-                                                        .sep("}");
 
     ///////////////////////////////////////////////////////////////////////////
     // object = {

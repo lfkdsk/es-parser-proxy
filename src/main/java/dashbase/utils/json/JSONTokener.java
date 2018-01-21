@@ -384,7 +384,7 @@ public class JSONTokener {
     /**
      * Reads a sequence of values and the trailing closing brace ']' of an
      * array. The opening brace '[' should have already been read. Note that
-     * "[]" yields an empty array, but "[,]" returns a two-element array
+     * "[]" yields an empty array, but "[,]" returns a two-base array
      * equivalent to "[null,null]".
      */
     private JSONArray readArray() throws JSONException {

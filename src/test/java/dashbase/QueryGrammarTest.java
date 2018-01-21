@@ -8,6 +8,7 @@ import dashbase.ast.base.AstNode;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
 import dashbase.ast.property.AstPropertyList;
+import dashbase.bnf.BnfCom;
 import dashbase.lexer.JustLexer;
 import dashbase.rules.QueryGrammar;
 import dashbase.utils.GrammarHelper;
@@ -16,6 +17,7 @@ import dashbase.utils.logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static dashbase.bnf.BnfCom.rule;
 import static dashbase.token.ReservedToken.reservedToken;
 import static dashbase.utils.tools.TextUtils.w;
 
@@ -81,15 +83,34 @@ public class QueryGrammarTest {
         JsonObject problem = new JsonObject();
         problem.add("lfkdsk", new JsonObject());
         String str = new GsonBuilder().setPrettyPrinting().create().toJson(problem);
-        Logger.init();
-        Logger.v(str);
         AstQueryProgram program = TestUtils.runGrammar(str);
+        Assert.assertNotNull(problem);
     }
+
 
     @Test
     public void testWrapperObjectProperty() {
         reservedToken.add(w("query"));
         reservedToken.add(w("lfkdsk"));
+
+        ///////////////////////////////////////////////////////////////////////////
+        // Special Auto-Generate Parser
+        ///////////////////////////////////////////////////////////////////////////
+
+        QueryGrammar grammar = new QueryGrammar();
+
+        BnfCom wrapperPropertyList = rule(AstPropertyList.class)
+                .option(rule(AstObjectProperty.class).literal(w("query")).sep(":").ast(grammar.getObject()).maybe(","))
+                .option(rule(AstObjectProperty.class).literal(w("lfkdsk")).sep(":").ast(grammar.getObject()).maybe(","))
+                .ast(grammar.getProperty())
+                .repeat(
+                        rule().sep(",").repeat(grammar.getProperty())
+                );
+
+        BnfCom wrapperObject = rule(AstObject.class).sep("{")
+                                                    .maybe(wrapperPropertyList)
+                                                    .sep("}");
+
 
         JsonObject problem = new JsonObject();
         problem.add("query", new JsonObject());
@@ -97,8 +118,7 @@ public class QueryGrammarTest {
         problem.add("12", new JsonObject());
         JustLexer lexer = new JustLexer(problem.toString());
 
-        QueryGrammar grammar = new QueryGrammar();
-        AstObject node = (AstObject) GrammarHelper.transformAst(grammar.getWrapperObject().parse(lexer));
+        AstObject node = (AstObject) GrammarHelper.transformAst(wrapperObject.parse(lexer));
         Assert.assertNotNull(node);
 
         AstPropertyList list = node.propertyList();
@@ -110,5 +130,8 @@ public class QueryGrammarTest {
 
         Assert.assertEquals(obj1.keyNode().value(), w("query"));
         Assert.assertEquals(obj2.keyNode().value(), w("lfkdsk"));
+
+        reservedToken.remove(w("query"));
+        reservedToken.remove(w("lfkdsk"));
     }
 }
