@@ -9,7 +9,9 @@ import dashbase.ast.property.AstPropertyList;
 import dashbase.bnf.BnfCom;
 import dashbase.rules.QueryGrammar;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static dashbase.bnf.BnfCom.rule;
@@ -51,20 +53,25 @@ class BnfHelper {
      */
     private static final QueryGrammar staticGrammar = new QueryGrammar();
 
+    public static final Map<String, BnfCom> cache = new HashMap<>();
+
     public static BnfCom primaryProperty(PrimaryDep dep) {
-        return rule(AstPrimaryProperty.class).literal(w(dep.getBindMethod().getName()))
+        return rule(AstPrimaryProperty.class).name(dep.getBindMethod().getName())
+                                             .literal(w(dep.getBindMethod().getName()))
                                              .sep(":")
                                              .ast(staticGrammar.getPrimary());
     }
 
     public static BnfCom objectProperty(Dependency dep, BnfCom object) {
-        return rule(AstObjectProperty.class).literal(w(dep.getBindMethod().getName()))
+        return rule(AstObjectProperty.class).name(dep.getBindMethod().getName())
+                                            .literal(w(dep.getBindMethod().getName()))
                                             .sep(":")
                                             .ast(object);
     }
 
     public static BnfCom arrayProperty(ArrayDep dep) {
-        return rule(AstArrayProperty.class).literal(w(dep.getBindMethod().getName()))
+        return rule(AstArrayProperty.class).name(dep.getBindMethod().getName())
+                                           .literal(w(dep.getBindMethod().getName()))
                                            .sep(":")
                                            .ast(staticGrammar.getArray());
     }
@@ -113,7 +120,7 @@ class BnfHelper {
                                                             .collect(Collectors.toList()));
 
             BnfCom object = object(properties);
-
+            cache.put(getBindMethod().key(), object);
 
             return objectProperty(this, object);
         }

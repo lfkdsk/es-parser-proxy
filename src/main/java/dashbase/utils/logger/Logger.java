@@ -1,7 +1,7 @@
 package dashbase.utils.logger;
 
 public final class Logger {
-    private static final String DEFAULT_TAG = "JustDB-LOGGER";
+    private static final String DEFAULT_TAG = "PROXY";
 
     private static Printer printer = new LoggerPrinter();
 

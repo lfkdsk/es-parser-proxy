@@ -3,6 +3,7 @@ package dashbase.meta;
 import dashbase.bnf.BnfCom;
 import dashbase.env.Context;
 import dashbase.utils.ObjectHelper;
+import dashbase.utils.tools.TextUtils;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static dashbase.meta.BnfHelper.cache;
 import static dashbase.meta.BnfHelper.dependency;
 
 public class BnfGenerator {
@@ -41,7 +43,7 @@ public class BnfGenerator {
 
         for (BindMethod subscriberMethod : subscriberMethods) {
             Dependency dependency = dependency(subscriberMethod);
-            tokensBindMethods.put(subscriberMethod.getName(), dependency);
+            tokensBindMethods.put(subscriberMethod.key(), dependency);
         }
 
         bindMethods.addAll(subscriberMethods);
@@ -49,12 +51,12 @@ public class BnfGenerator {
 
     public void sortMapToTree() {
         for (BindMethod subscriberMethod : bindMethods) {
-            String name = subscriberMethod.getName();
+            String key = subscriberMethod.key();
 
             switch (subscriberMethod.getMode()) {
                 case WRAPPER: {
                     this.wrapperBindMethod = subscriberMethod;
-                    this.wrapperBindDependency = tokensBindMethods.get(name);
+                    this.wrapperBindDependency = tokensBindMethods.get(subscriberMethod.key());
                     break;
                 }
                 case PRIMARY:
@@ -67,8 +69,13 @@ public class BnfGenerator {
                     Dependency[] dependencies = new Dependency[prefixes.length];
                     for (int i = 0; i < prefixes.length; i++) {
                         String prefix = prefixes[i];
+                        if (prefix.equals("wrapper")) {
+                            prefix += "[" + GrammarMode.WRAPPER.name() + "]";
+                        } else {
+                            prefix += "[" + GrammarMode.OBJECT.name() + "]";
+                        }
                         dependencies[i] = ObjectHelper.requireNonNull(tokensBindMethods.get(prefix), "prefix dependency null");
-                        dependencies[i].getDependencies().put(name, tokensBindMethods.get(name));
+                        dependencies[i].getDependencies().put(key, tokensBindMethods.get(key));
                     }
 
                     break;
@@ -77,11 +84,20 @@ public class BnfGenerator {
         }
     }
 
-
     public BnfCom generate() {
         sortMapToTree();
+        BnfCom bnfCom = wrapperBindDependency.create();
 
-        return wrapperBindDependency.create();
+        for (BindMethod bindMethod : bindMethods) {
+            if (!TextUtils.isEmpty(bindMethod.getInsert()) && cache.containsKey(bindMethod.key())) {
+                BnfCom bind = cache.get(bindMethod.key());
+                BnfCom insert = cache.get(bindMethod.getInsert() + "[" + GrammarMode.OBJECT.name() + "]");
+
+                bind.or(insert);
+            }
+        }
+
+        return bnfCom;
     }
 
     public Context context() {

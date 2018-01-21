@@ -18,16 +18,24 @@ public class BindMethod {
     @Getter
     private final Method method;
 
+    @Getter
+    private final String insert;
+
+    @Getter
+    private final Object instance;
+
     /**
      * Used for efficient comparison
      */
     private String methodString;
 
-    public BindMethod(String name, String[] prefix, GrammarMode mode, Method method) {
+    public BindMethod(String name, String[] prefix, GrammarMode mode, Method method, String insert, Object instance) {
         this.name = name;
         this.prefix = prefix;
         this.mode = mode;
         this.method = method;
+        this.insert = insert;
+        this.instance = instance;
     }
 
     private void checkMethodString() {
@@ -44,6 +52,10 @@ public class BindMethod {
     @Override
     public int hashCode() {
         return method.hashCode();
+    }
+
+    public String key() {
+        return String.format("%s[%s]", name, mode.name());
     }
 
     @Override

@@ -2,6 +2,7 @@ package dashbase.ast.object;
 
 import dashbase.ast.base.AstNode;
 import dashbase.ast.property.Property;
+import dashbase.env.Context;
 import dashbase.token.Tokens;
 
 import java.util.List;
@@ -13,5 +14,11 @@ public class AstObjectProperty extends Property {
 
     public AstObject object() {
         return (AstObject) child(1);
+    }
+
+    @Override
+    public void eval(Context context) {
+        object().eval(context);
+        super.eval(context);
     }
 }

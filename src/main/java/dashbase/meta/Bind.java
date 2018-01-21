@@ -23,5 +23,10 @@ public @interface Bind {
      * Prefix Method Support
      */
     String[] prefix() default {};
+
+    /**
+     * Insert Position
+     */
+    String insert() default "";
 }
 

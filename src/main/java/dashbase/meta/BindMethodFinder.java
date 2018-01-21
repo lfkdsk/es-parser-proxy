@@ -68,9 +68,12 @@ public class BindMethodFinder {
 
     private void findUsingReflectionInSingleClass(BindStates findState) {
         Method[] methods;
+        Object instance = null;
+
         try {
             // This is faster than getMethods
             methods = findState.bindClass.getDeclaredMethods();
+            instance = findState.bindClass.newInstance();
         } catch (Throwable th) {
             methods = findState.bindClass.getMethods();
         }
@@ -90,8 +93,9 @@ public class BindMethodFinder {
                                     bindAnnotation.name(),
                                     bindAnnotation.prefix(),
                                     mode,
-                                    method
-                            ));
+                                    method,
+                                    bindAnnotation.insert(),
+                                    instance));
                         }
                     }
                 } else if (method.isAnnotationPresent(Bind.class)) {
