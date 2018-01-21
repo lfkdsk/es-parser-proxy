@@ -9,6 +9,7 @@ import static dashbase.meta.GrammarMode.OBJECT;
 import static dashbase.meta.GrammarMode.WRAPPER;
 
 public class PropertyTest {
+
     @Bind(name = "wrapper", mode = WRAPPER)
     public void wrapper(AstQueryProgram property, Context context) {
 
@@ -71,6 +72,26 @@ public class PropertyTest {
 
     @Bind(name = "ids", mode = OBJECT, prefix = "query")
     public void ids(AstObjectProperty property, Context context) {
+
+    }
+
+    @Bind(name = "constant_score", mode = OBJECT, prefix = "query")
+    public void constantScore(AstObjectProperty property, Context context) {
+
+    }
+
+    @Bind(name = "bool", mode = OBJECT, prefix = "query")
+    public void bool(AstObjectProperty property, Context context) {
+
+    }
+
+    @Bind(name = "dis_max", mode = OBJECT, prefix = "query")
+    public void disMax(AstObjectProperty property, Context context) {
+
+    }
+
+    @Bind(name = "boosting", mode = OBJECT, prefix = "query")
+    public void boosting(AstObjectProperty property, Context context) {
 
     }
 
