@@ -2,6 +2,7 @@ package dashbase.env;
 
 import com.google.gson.JsonObject;
 import dashbase.ast.AstQueryProgram;
+import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
 import dashbase.bnf.BnfCom;
 import dashbase.lexer.JustLexer;
@@ -11,8 +12,6 @@ import dashbase.meta.GrammarMode;
 import dashbase.utils.GrammarHelper;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static dashbase.utils.tools.TextUtils.w;
 
 public class ContextTest {
 
@@ -45,19 +44,30 @@ public class ContextTest {
 
 
         JsonObject object = new JsonObject();
-        JsonObject query = new JsonObject();
+        JsonObject queryJsonObj = new JsonObject();
 
-        query.add("match_all", new JsonObject());
-        object.add("query", query);
+        queryJsonObj.add("match_all", new JsonObject());
+        object.add("query", queryJsonObj);
 
         JustLexer lexer = new JustLexer(object.toString());
-        lexer.reserved(w("query"));
-        lexer.reserved(w("match_all"));
+        lexer.reserved(("query"));
+        lexer.reserved(("match_all"));
 
         BnfCom bnfCom = generator.generate();
         AstQueryProgram program = (AstQueryProgram) GrammarHelper.transformAst(bnfCom.parse(lexer));
 
         Assert.assertNotNull(program);
 
+        AstObject obj = program.object();
+        Assert.assertNotNull(obj);
+
+        AstObjectProperty query = (AstObjectProperty) obj.property("query");
+        Assert.assertNotNull(query);
+
+        AstObject queryObj = query.object();
+        Assert.assertNotNull(queryObj);
+
+        AstObjectProperty matchAll = (AstObjectProperty) queryObj.property("match_all");
+        Assert.assertNotNull(matchAll);
     }
 }

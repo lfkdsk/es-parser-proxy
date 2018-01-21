@@ -132,4 +132,38 @@ public class QueryGrammarTest {
         Assert.assertEquals(obj2.keyNode().value(), w("lfkdsk"));
 
     }
+
+    @Test
+    public void testToken() {
+        JsonObject problem = new JsonObject();
+        problem.addProperty("12", "lfkdsk");
+        problem.addProperty("lfkdsk", "lfkdsk");
+
+        JustLexer lexer = new JustLexer(problem.toString());
+
+        QueryGrammar grammar = new QueryGrammar();
+
+        BnfCom wrapperPropertyList = rule(AstPropertyList.class)
+                .or(
+                        rule(AstObjectProperty.class).literal(("query")).sep(":").ast(grammar.getObject()).maybe(","),
+                        rule(AstObjectProperty.class).literal(("lfkdsk")).sep(":").ast(grammar.getObject()).maybe(","),
+                        rule(AstPropertyList.class).ast(grammar.getProperty()).repeat(rule().sep(",").repeat(grammar.getProperty()))
+                );
+
+        BnfCom wrapperObject = rule(AstObject.class).sep("{")
+                                                    .maybe(wrapperPropertyList)
+                                                    .sep("}");
+
+        AstNode node = wrapperObject.parse(lexer);
+        Assert.assertNotNull(node);
+
+
+        JsonObject problem1 = new JsonObject();
+        problem1.addProperty("12", "lfkdsk");
+
+        JustLexer lexer1 = new JustLexer(problem1.toString());
+        AstNode node1 = wrapperObject.parse(lexer1);
+        Assert.assertNotNull(node1);
+
+    }
 }

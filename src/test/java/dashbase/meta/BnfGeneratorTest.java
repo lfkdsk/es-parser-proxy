@@ -2,15 +2,15 @@ package dashbase.meta;
 
 import com.google.gson.JsonObject;
 import dashbase.ast.AstQueryProgram;
+import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
+import dashbase.ast.property.AstPropertyList;
 import dashbase.bnf.BnfCom;
 import dashbase.env.Context;
 import dashbase.lexer.JustLexer;
 import dashbase.utils.GrammarHelper;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static dashbase.utils.tools.TextUtils.w;
 
 public class BnfGeneratorTest {
 
@@ -78,14 +78,17 @@ public class BnfGeneratorTest {
         object.add("query", new JsonObject());
 
         JustLexer lexer = new JustLexer(object.toString());
-        lexer.reserved(w("query"));
-        lexer.reserved(w("filter"));
+        lexer.reserved(("query"));
+        lexer.reserved(("filter"));
 
         BnfCom bnfCom = generator.generate();
         AstQueryProgram program = (AstQueryProgram) GrammarHelper.transformAst(bnfCom.parse(lexer));
 
         Assert.assertNotNull(program);
 
+        AstObject object1 = program.object();
+        AstPropertyList list = object1.propertyList();
+        Assert.assertEquals(2, list.childCount());
     }
 
 }

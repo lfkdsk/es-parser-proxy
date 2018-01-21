@@ -27,25 +27,6 @@ import java.util.Set;
  */
 public class BnfCom {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 存储全部的BNF表达式
      */

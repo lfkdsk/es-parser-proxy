@@ -145,6 +145,7 @@ public class QueryGrammar {
     // use in [  ]
     ///////////////////////////////////////////////////////////////////////////
 
+    @Getter
     private BnfCom propertyList = propertyList0.reset(AstPropertyList.class).ast(property).repeat(
             rule().sep(",").repeat(property)
     );

@@ -6,6 +6,7 @@ import dashbase.env.Context;
 import dashbase.token.Tokens;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ public class AstPropertyList extends QueryAstList {
         super(children, Tokens.PROPERTY_LIST);
 
         // after transformer
+
+        List<AstNode> resetList = new LinkedList<>(children);
         for (AstNode child : children) {
             int tag = child.getTag();
             switch (tag) {
@@ -40,8 +43,19 @@ public class AstPropertyList extends QueryAstList {
                     properties.put(property.keyNode().value(), property);
                     break;
                 }
+                case Tokens.PROPERTY_LIST: {
+                    resetList.remove(child);
+                    AstPropertyList propertyList = (AstPropertyList) child;
+                    for (Map.Entry<String, Property> stringPropertyEntry : propertyList.properties.entrySet()) {
+                        properties.put(stringPropertyEntry.getKey(), stringPropertyEntry.getValue());
+                        resetList.add(stringPropertyEntry.getValue());
+                    }
+                    break;
+                }
             }
         }
+
+        this.children = resetList;
     }
 
     public Property child(String name) {

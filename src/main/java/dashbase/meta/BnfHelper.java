@@ -9,6 +9,9 @@ import dashbase.ast.property.AstPropertyList;
 import dashbase.bnf.BnfCom;
 import dashbase.rules.QueryGrammar;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static dashbase.bnf.BnfCom.rule;
 import static dashbase.utils.tools.TextUtils.w;
 
@@ -73,16 +76,16 @@ class BnfHelper {
     }
 
 
-    public static BnfCom properties(BnfCom... properties) {
+    public static BnfCom properties(List<BnfCom> properties) {
         BnfCom rule = rule(AstPropertyList.class);
+
         for (BnfCom property : properties) {
-            rule = rule.option(property.maybe(","));
+            property.maybe(",");
         }
 
-        return rule.option(staticGrammar.getProperty())
-                   .repeat(
-                           rule().sep(",").repeat(staticGrammar.getProperty())
-                   );
+        properties.add(staticGrammar.getPropertyList());
+
+        return rule.or(properties.toArray(new BnfCom[0]));
     }
 
     public static class PrimaryDep extends Dependency {
@@ -107,7 +110,7 @@ class BnfHelper {
             BnfCom properties = properties(getDependencies().values()
                                                             .stream()
                                                             .map(Dependency::create)
-                                                            .toArray(BnfCom[]::new));
+                                                            .collect(Collectors.toList()));
 
             BnfCom object = object(properties);
 
@@ -126,7 +129,7 @@ class BnfHelper {
             BnfCom properties = properties(getDependencies().values()
                                                             .stream()
                                                             .map(Dependency::create)
-                                                            .toArray(BnfCom[]::new));
+                                                            .collect(Collectors.toList()));
 
             return rule(AstQueryProgram.class).ast(object(properties));
         }
