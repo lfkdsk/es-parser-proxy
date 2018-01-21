@@ -27,7 +27,7 @@ public class AstList extends AstNode {
         super(tag);
         this.children = children;
 
-        for (int i = 0; i < children.size(); i++) {
+        for (int i = 0; children != null && i < children.size(); i++) {
             AstNode child = child(i);
             child.setParentNode(this);
             child.setChildIndex(i);

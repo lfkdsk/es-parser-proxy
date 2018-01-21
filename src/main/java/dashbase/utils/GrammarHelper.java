@@ -5,16 +5,10 @@ import dashbase.ast.base.AstNode;
 import dashbase.ast.primary.AstPrimary;
 import dashbase.ast.property.AstProperty;
 import dashbase.ast.value.AstValue;
-import dashbase.bnf.BnfCom;
-import dashbase.exception.ParseException;
 import dashbase.rules.QueryGrammar;
 
 public class GrammarHelper {
 
-    /**
-     * Static Grammar
-     */
-    private static final QueryGrammar staticGrammar = new QueryGrammar();
 
     /**
      * AST Transformer
@@ -45,14 +39,5 @@ public class GrammarHelper {
         }
 
         return root;
-    }
-
-    public static BnfCom addSpecToObj(BnfCom object) {
-        BnfCom astObject = staticGrammar.getObject();
-        if (!astObject.equals(object)) {
-            throw new ParseException(" Cannot convert AstObject to Special AstObject. ");
-        }
-
-        return object.of(astObject);
     }
 }

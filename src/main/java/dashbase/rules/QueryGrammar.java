@@ -99,6 +99,7 @@ public class QueryGrammar {
     // ]
     ///////////////////////////////////////////////////////////////////////////
 
+    @Getter
     private BnfCom array = rule(AstArray.class).sep("[")
                                                .maybe(valueList0)
                                                .sep("]");
@@ -107,6 +108,7 @@ public class QueryGrammar {
     // array property := string : array
     ///////////////////////////////////////////////////////////////////////////
 
+    @Getter
     private BnfCom arrayProperty = rule(AstArrayProperty.class).ast(string).sep(":").ast(array);
 
 

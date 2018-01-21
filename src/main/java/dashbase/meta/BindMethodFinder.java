@@ -1,7 +1,7 @@
 package dashbase.meta;
 
+import dashbase.ast.AstQueryProgram;
 import dashbase.ast.array.AstArrayProperty;
-import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
 import dashbase.ast.primary.AstPrimaryProperty;
 import dashbase.exception.BindException;
@@ -17,11 +17,7 @@ public class BindMethodFinder {
 
     private static final int BRIDGE = 0x40;
     private static final int SYNTHETIC = 0x1000;
-
     private static final int MODIFIERS_IGNORE = Modifier.ABSTRACT | Modifier.STATIC | BRIDGE | SYNTHETIC;
-
-    private static final int POOL_SIZE = 4;
-    private static final BindStates[] FIND_STATE_POOL = new BindStates[POOL_SIZE];
 
     private static final Map<Class<?>, List<BindMethod>> METHOD_CACHE = new HashMap<>();
 
@@ -41,7 +37,7 @@ public class BindMethodFinder {
             } else if (mode == GrammarMode.PRIMARY) {
                 return nodeType.isAssignableFrom(AstPrimaryProperty.class);
             } else if (mode == GrammarMode.WRAPPER) {
-                return nodeType.isAssignableFrom(AstObject.class);
+                return nodeType.isAssignableFrom(AstQueryProgram.class);
             }
 
             return false;
@@ -58,7 +54,16 @@ public class BindMethodFinder {
         BindStates state = new BindStates(subscriberClass);
         findUsingReflectionInSingleClass(state);
 
-        return state.subscriberMethods;
+        bindMethods = state.subscriberMethods;
+
+        if (bindMethods.isEmpty()) {
+            throw new BindException("Bind " + subscriberClass
+                    + " and its super classes have no public methods with the @Bind annotation");
+        } else {
+            METHOD_CACHE.put(subscriberClass, bindMethods);
+            return bindMethods;
+        }
+
     }
 
     private void findUsingReflectionInSingleClass(BindStates findState) {

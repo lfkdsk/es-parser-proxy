@@ -23,17 +23,14 @@ public class BindMethod {
      */
     private String methodString;
 
-    public BindMethod(String name,
-                      String[] prefix,
-                      GrammarMode mode,
-                      Method method) {
+    public BindMethod(String name, String[] prefix, GrammarMode mode, Method method) {
         this.name = name;
         this.prefix = prefix;
         this.mode = mode;
         this.method = method;
     }
 
-    private synchronized void checkMethodString() {
+    private void checkMethodString() {
         if (methodString == null) {
             // Method.toString has more overhead, just take relevant parts of the method
             StringBuilder builder = new StringBuilder(64);

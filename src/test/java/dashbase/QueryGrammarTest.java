@@ -102,7 +102,7 @@ public class QueryGrammarTest {
         BnfCom wrapperPropertyList = rule(AstPropertyList.class)
                 .option(rule(AstObjectProperty.class).literal(w("query")).sep(":").ast(grammar.getObject()).maybe(","))
                 .option(rule(AstObjectProperty.class).literal(w("lfkdsk")).sep(":").ast(grammar.getObject()).maybe(","))
-                .ast(grammar.getProperty())
+                .option(grammar.getProperty())
                 .repeat(
                         rule().sep(",").repeat(grammar.getProperty())
                 );
