@@ -108,7 +108,7 @@ public class SkipList<K extends Comparable<K>, V> implements Map<K, V> {
                 createNewLevel();
             }
 
-            // find up level node to bind it
+            // find up level node to meta it
             while (p.up == null) {
                 if (p.left == null) {
                     // p equal header node

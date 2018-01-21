@@ -7,6 +7,7 @@ import dashbase.ast.literal.StringLiteral;
 import dashbase.exception.ParseException;
 import dashbase.lexer.JustLexer;
 import dashbase.token.Token;
+import lombok.Getter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -40,6 +41,15 @@ public class BnfCom {
          * @throws ParseException
          */
         protected abstract boolean match(JustLexer lexer) throws ParseException;
+
+
+        @Override
+        public boolean equals(Object obj) {
+            String thisClassName = this.getClass().getSimpleName();
+            String objClassName = obj.getClass().getSimpleName();
+
+            return thisClassName.equals(objClassName);
+        }
     }
 
     /**
@@ -416,6 +426,33 @@ public class BnfCom {
         }
     }
 
+    protected static class SkipOR extends Leaf {
+
+        protected SkipOR(String pat) {
+            super(new String[]{pat});
+        }
+
+        @Override
+        protected void find(List<AstNode> list, Token token) {
+
+        }
+
+        @Override
+        protected void parse(JustLexer lexer, List<AstNode> nodes) throws ParseException {
+            String pat = tokens[0];
+            Token token = lexer.peek(0);
+
+            if (token.getText().equals(pat)) {
+                lexer.read();
+            }
+        }
+
+        @Override
+        protected boolean match(JustLexer lexer) throws ParseException {
+            return true;
+        }
+    }
+
     public final static class Precedence {
         final int value;
         final boolean leftAssoc;
@@ -639,10 +676,10 @@ public class BnfCom {
      */
     protected List<Element> elements;
 
-    /**
-     * 构建工厂类
-     */
     protected Factory factory;
+
+    @Getter
+    private String ruleName;
 
     public BnfCom(Class<? extends AstNode> clazz) {
         reset(clazz);
@@ -705,6 +742,12 @@ public class BnfCom {
     public BnfCom reset(Class<? extends AstNode> clazz) {
         elements = new ArrayList<>();
         factory = Factory.getForAstList(clazz);
+        return this;
+    }
+
+    public BnfCom of(BnfCom origin) {
+        this.elements = new ArrayList<>(origin.elements);
+        this.factory = origin.factory;
         return this;
     }
 
@@ -821,6 +864,11 @@ public class BnfCom {
         return this;
     }
 
+    public BnfCom maybe(String token) {
+        elements.add(new SkipOR(token));
+        return this;
+    }
+
     /**
      * onlyOne 只重复一次
      *
@@ -874,5 +922,31 @@ public class BnfCom {
     public BnfCom literal(String literal) {
         elements.add(new StableStringToken(literal));
         return this;
+    }
+
+    public BnfCom name(String name) {
+        this.ruleName = name;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        BnfCom bnfCom = (BnfCom) obj;
+        List<Element> objElements = bnfCom.elements;
+
+        if (elements.size() != objElements.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < elements.size(); i++) {
+            Element e1 = elements.get(i);
+            Element e2 = objElements.get(i);
+
+            if (!e1.equals(e2)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -22,6 +22,7 @@ import lombok.Getter;
 import static dashbase.bnf.BnfCom.rule;
 import static dashbase.token.ReservedToken.reservedToken;
 import static dashbase.utils.GrammarHelper.transformAst;
+import static dashbase.utils.tools.TextUtils.w;
 
 public class QueryGrammar {
 
@@ -76,6 +77,7 @@ public class QueryGrammar {
     // }
     ///////////////////////////////////////////////////////////////////////////
 
+    @Getter
     private BnfCom object = rule(AstObject.class).sep("{")
                                                  .maybe(propertyList0)
                                                  .sep("}");
@@ -185,8 +187,9 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     private BnfCom wrapperPropertyList = rule(AstPropertyList.class)
-            .option(rule(AstObjectProperty.class).literal("\"query\"").sep(":").ast(object))
-            .option(rule(AstObjectProperty.class).literal("\"lfkdsk\"").sep(":").ast(object))
+            .option(rule(AstObjectProperty.class).literal(w("query")).sep(":").ast(object).maybe(","))
+            .option(rule(AstObjectProperty.class).literal(w("lfkdsk")).sep(":").ast(object).maybe(","))
+            .ast(property)
             .repeat(
                     rule().sep(",").repeat(property)
             );

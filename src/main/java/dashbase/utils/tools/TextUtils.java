@@ -137,4 +137,14 @@ public class TextUtils {
 
         return builder.toString();
     }
+
+    /**
+     * String Wrapper
+     *
+     * @param wrapper inner-str
+     * @return \"wrapper\"
+     */
+    public static String w(String wrapper) {
+        return String.format("\"%s\"", wrapper);
+    }
 }

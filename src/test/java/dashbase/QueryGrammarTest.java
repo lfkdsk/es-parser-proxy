@@ -5,6 +5,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dashbase.ast.AstQueryProgram;
 import dashbase.ast.base.AstNode;
+import dashbase.ast.object.AstObject;
+import dashbase.ast.object.AstObjectProperty;
+import dashbase.ast.property.AstPropertyList;
 import dashbase.lexer.JustLexer;
 import dashbase.rules.QueryGrammar;
 import dashbase.utils.GrammarHelper;
@@ -14,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static dashbase.token.ReservedToken.reservedToken;
+import static dashbase.utils.tools.TextUtils.w;
 
 public class QueryGrammarTest {
 
@@ -84,14 +88,27 @@ public class QueryGrammarTest {
 
     @Test
     public void testWrapperObjectProperty() {
-        reservedToken.add("\"query\"");
+        reservedToken.add(w("query"));
+        reservedToken.add(w("lfkdsk"));
+
         JsonObject problem = new JsonObject();
         problem.add("query", new JsonObject());
         problem.add("lfkdsk", new JsonObject());
+        problem.add("12", new JsonObject());
         JustLexer lexer = new JustLexer(problem.toString());
-        lexer.tokens();
-        QueryGrammar grammar = new QueryGrammar();
-        AstNode node = GrammarHelper.transformAst(grammar.getWrapperObject().parse(lexer));
 
+        QueryGrammar grammar = new QueryGrammar();
+        AstObject node = (AstObject) GrammarHelper.transformAst(grammar.getWrapperObject().parse(lexer));
+        Assert.assertNotNull(node);
+
+        AstPropertyList list = node.propertyList();
+        Assert.assertNotNull(list);
+        Assert.assertEquals(3, list.childCount());
+
+        AstObjectProperty obj1 = (AstObjectProperty) list.child(0);
+        AstObjectProperty obj2 = (AstObjectProperty) list.child(1);
+
+        Assert.assertEquals(obj1.keyNode().value(), w("query"));
+        Assert.assertEquals(obj2.keyNode().value(), w("lfkdsk"));
     }
 }
