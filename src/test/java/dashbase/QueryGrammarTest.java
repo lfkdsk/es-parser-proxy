@@ -18,7 +18,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static dashbase.bnf.BnfCom.rule;
-import static dashbase.token.ReservedToken.reservedToken;
 import static dashbase.utils.tools.TextUtils.w;
 
 public class QueryGrammarTest {
@@ -84,14 +83,12 @@ public class QueryGrammarTest {
         problem.add("lfkdsk", new JsonObject());
         String str = new GsonBuilder().setPrettyPrinting().create().toJson(problem);
         AstQueryProgram program = TestUtils.runGrammar(str);
-        Assert.assertNotNull(problem);
+        Assert.assertNotNull(program);
     }
 
 
     @Test
     public void testWrapperObjectProperty() {
-        reservedToken.add(w("query"));
-        reservedToken.add(w("lfkdsk"));
 
         ///////////////////////////////////////////////////////////////////////////
         // Special Auto-Generate Parser
@@ -116,7 +113,10 @@ public class QueryGrammarTest {
         problem.add("query", new JsonObject());
         problem.add("lfkdsk", new JsonObject());
         problem.add("12", new JsonObject());
+
         JustLexer lexer = new JustLexer(problem.toString());
+        lexer.reserved(w("query"));
+        lexer.reserved(w("lfkdsk"));
 
         AstObject node = (AstObject) GrammarHelper.transformAst(wrapperObject.parse(lexer));
         Assert.assertNotNull(node);
@@ -131,7 +131,5 @@ public class QueryGrammarTest {
         Assert.assertEquals(obj1.keyNode().value(), w("query"));
         Assert.assertEquals(obj2.keyNode().value(), w("lfkdsk"));
 
-        reservedToken.remove(w("query"));
-        reservedToken.remove(w("lfkdsk"));
     }
 }

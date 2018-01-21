@@ -8,7 +8,7 @@ import java.util.Set;
  * Language reserved word
  *
  * @author liufengkai
- *         Created by liufengkai on 2017/7/26.
+ * Created by liufengkai on 2017/7/26.
  * @see BoolToken
  */
 public class ReservedToken extends Token {
@@ -47,7 +47,7 @@ public class ReservedToken extends Token {
     /**
      * reserved token in this set
      */
-    public final static Set<String> reservedToken = new HashSet<>();
+    private final static Set<String> reservedToken = new HashSet<>();
 
     static {
         // TRUE_TOKEN = "true", FALSE_TOKEN = "false"
@@ -82,6 +82,10 @@ public class ReservedToken extends Token {
         reservedToken.add(COLON_TOKEN);
         reservedToken.add(AMPERSAND_TOKEN);
         reservedToken.add(BAR_TOKEN);
+    }
+
+    public static Set<String> reversed() {
+        return new HashSet<>(reservedToken);
     }
 
     public ReservedToken(int lineNumber, String token) {

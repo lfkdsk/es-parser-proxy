@@ -4,6 +4,7 @@ package dashbase.lexer;
 import dashbase.exception.ParseException;
 import dashbase.token.*;
 import dashbase.utils.NumberUtils;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -12,11 +13,12 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static dashbase.lexer.JustRegex.hobbyReg;
-import static dashbase.token.ReservedToken.reservedToken;
+import static dashbase.token.ReservedToken.reversed;
 import static dashbase.utils.tools.TextUtils.toStringLiteral;
 
 /**
@@ -27,22 +29,30 @@ import static dashbase.utils.tools.TextUtils.toStringLiteral;
  * @author liufengkai
  */
 public class JustLexer {
-    private Pattern regPattern = Pattern.compile(hobbyReg);
+    private final Pattern regPattern = Pattern.compile(hobbyReg);
 
-    private LinkedList<Token> queue = new LinkedList<>();
+    private final LinkedList<Token> queue = new LinkedList<>();
 
-    private ArrayList<String> avoid = new ArrayList<>();
+    private final ArrayList<String> avoid = new ArrayList<>();
 
+    @Getter
+    private final Set<String> reservedToken = reversed();
+
+    @Getter
     private boolean hasMore;
 
     private LineNumberReader reader;
 
+    @Getter
     private int lineNumber;
 
     private JustLexer backup;
 
     private JustLexer(JustLexer lexer) {
-        this.queue = new LinkedList<>(lexer.queue);
+        // add to queue
+        this.queue.clear();
+        this.queue.addAll(lexer.queue);
+
         this.hasMore = lexer.hasMore;
         this.lineNumber = lexer.reader.getLineNumber();
     }
@@ -198,7 +208,7 @@ public class JustLexer {
                 if (checkedNum instanceof Double) {
                     checkedType = Token.DOUBLE;
                 }
-            // int or long
+                // int or long
             } else {
                 checkedNum = NumberUtils.parseLong(floatToken);
                 checkedType = Token.INTEGER;
@@ -225,7 +235,7 @@ public class JustLexer {
 
         if (string != null) {
 
-            if (reservedToken.contains(string)){
+            if (reservedToken.contains(string)) {
                 queue.add(new ReservedToken(lineNum, string));
                 return;
             }
@@ -274,6 +284,10 @@ public class JustLexer {
         return queue;
     }
 
+    public void reserved(String token) {
+        this.reservedToken.add(token);
+    }
+
     public void backup() {
         this.backup = new JustLexer(this);
     }
@@ -281,7 +295,9 @@ public class JustLexer {
     public void recover() {
         if (backup != null) {
             this.reader.setLineNumber(backup.lineNumber);
-            this.queue = new LinkedList<>(backup.queue);
+            // clear all && add all
+            this.queue.clear();
+            this.queue.addAll(backup.queue);
             this.lineNumber = backup.lineNumber;
             this.hasMore = backup.hasMore;
         }

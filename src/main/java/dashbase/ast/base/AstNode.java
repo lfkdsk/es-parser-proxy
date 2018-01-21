@@ -9,8 +9,8 @@
 package dashbase.ast.base;
 
 
-import dashbase.ast.env.Context;
-import dashbase.ast.env.Evaluable;
+import dashbase.env.Context;
+import dashbase.env.Evaluable;
 import dashbase.exception.EvalException;
 import dashbase.utils.tools.TextUtils;
 import lombok.Getter;

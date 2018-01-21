@@ -1,7 +1,7 @@
 package dashbase.ast;
 
 import dashbase.ast.base.AstNode;
-import dashbase.ast.env.Context;
+import dashbase.env.Context;
 import dashbase.ast.object.AstObject;
 import dashbase.token.Tokens;
 

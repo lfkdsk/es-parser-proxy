@@ -4,7 +4,6 @@ import dashbase.ast.AstQueryProgram;
 import dashbase.ast.array.AstArray;
 import dashbase.ast.array.AstArrayProperty;
 import dashbase.ast.literal.BoolLiteral;
-import dashbase.ast.literal.IDLiteral;
 import dashbase.ast.literal.NumberLiteral;
 import dashbase.ast.literal.StringLiteral;
 import dashbase.ast.object.AstObject;
@@ -20,7 +19,6 @@ import dashbase.lexer.JustLexer;
 import lombok.Getter;
 
 import static dashbase.bnf.BnfCom.rule;
-import static dashbase.token.ReservedToken.reservedToken;
 import static dashbase.utils.GrammarHelper.transformAst;
 
 public class QueryGrammar {
@@ -34,7 +32,7 @@ public class QueryGrammar {
 
     private BnfCom number = rule().number(NumberLiteral.class);
 
-    private BnfCom id = rule().identifier(IDLiteral.class, reservedToken);
+//    private BnfCom id = rule().identifier(IDLiteral.class, reservedToken);
 
     private BnfCom string = rule().string(StringLiteral.class);
 

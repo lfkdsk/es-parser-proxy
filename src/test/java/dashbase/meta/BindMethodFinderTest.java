@@ -1,6 +1,6 @@
 package dashbase.meta;
 
-import dashbase.ast.env.Context;
+import dashbase.env.Context;
 import dashbase.ast.object.AstObjectProperty;
 import org.junit.Assert;
 import org.junit.Test;

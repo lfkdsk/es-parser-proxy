@@ -2,7 +2,7 @@ package dashbase.ast.property;
 
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
-import dashbase.ast.env.Context;
+import dashbase.env.Context;
 import dashbase.token.Tokens;
 
 import java.util.HashMap;

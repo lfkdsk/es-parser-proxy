@@ -2,7 +2,7 @@ package dashbase.ast.object;
 
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
-import dashbase.ast.env.Context;
+import dashbase.env.Context;
 import dashbase.ast.property.AstPropertyList;
 import dashbase.ast.property.Property;
 import dashbase.token.Tokens;

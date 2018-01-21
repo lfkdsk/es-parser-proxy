@@ -1,6 +1,7 @@
 package dashbase.meta;
 
 import dashbase.bnf.BnfCom;
+import dashbase.env.Context;
 import dashbase.utils.ObjectHelper;
 import lombok.Getter;
 
@@ -81,5 +82,11 @@ public class BnfGenerator {
         sortMapToTree();
 
         return wrapperBindDependency.create();
+    }
+
+    public Context context() {
+        Context context = new Context();
+        context.addBindMethods(tokensBindMethods);
+        return context;
     }
 }

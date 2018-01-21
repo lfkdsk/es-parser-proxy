@@ -2,6 +2,7 @@ package dashbase.ast.property;
 
 import dashbase.ast.QueryAstList;
 import dashbase.ast.base.AstNode;
+import dashbase.env.Context;
 import dashbase.ast.literal.StringLiteral;
 import dashbase.token.Tokens;
 
@@ -41,5 +42,10 @@ public abstract class Property extends QueryAstList {
     @Override
     public String target() {
         return keyNode().value();
+    }
+
+    @Override
+    public void eval(Context context) {
+        super.eval(context);
     }
 }
