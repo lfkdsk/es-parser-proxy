@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'com.google.code.gson:gson:2.8.2'
+    testCompile 'com.google.code.gson:gson:2.8.2'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
     compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
 }

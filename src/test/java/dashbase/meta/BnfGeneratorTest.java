@@ -38,9 +38,9 @@ public class BnfGeneratorTest {
 
         generator.sortMapToTree();
         Assert.assertEquals(generator.getTokensBindMethods()
-                                     .get("wrapper")
+                                     .get("wrapper[WRAPPER]")
                                      .getDependencies()
-                                     .get("query")
+                                     .get("query[OBJECT]")
                                      .getBindMethod()
                                      .getMode(), GrammarMode.OBJECT);
     }
