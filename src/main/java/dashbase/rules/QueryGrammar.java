@@ -1,5 +1,7 @@
 package dashbase.rules;
 
+import bnfgenast.bnf.BnfCom;
+import bnfgenast.lexer.Lexer;
 import dashbase.ast.AstQueryProgram;
 import dashbase.ast.array.AstArray;
 import dashbase.ast.array.AstArrayProperty;
@@ -14,11 +16,9 @@ import dashbase.ast.property.AstProperty;
 import dashbase.ast.property.AstPropertyList;
 import dashbase.ast.value.AstValue;
 import dashbase.ast.value.AstValueList;
-import dashbase.bnf.BnfCom;
-import dashbase.lexer.JustLexer;
 import lombok.Getter;
 
-import static dashbase.bnf.BnfCom.rule;
+import static bnfgenast.bnf.BnfCom.rule;
 import static dashbase.utils.GrammarHelper.transformAst;
 
 public class QueryGrammar {
@@ -192,7 +192,7 @@ public class QueryGrammar {
 
     private BnfCom program = rule(AstQueryProgram.class).ast(object);
 
-    public AstQueryProgram parse(JustLexer lexer) {
+    public AstQueryProgram parse(Lexer lexer) {
         return (AstQueryProgram) transformAst(program.parse(lexer));
     }
 }

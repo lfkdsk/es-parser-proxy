@@ -1,7 +1,7 @@
 package dashbase.ast.primary;
 
+import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
-import dashbase.ast.base.AstNode;
 import dashbase.ast.literal.Literal;
 import dashbase.token.Tokens;
 

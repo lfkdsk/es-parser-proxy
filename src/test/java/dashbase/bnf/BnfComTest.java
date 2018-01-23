@@ -1,5 +1,6 @@
 package dashbase.bnf;
 
+import bnfgenast.bnf.BnfCom;
 import dashbase.ast.literal.BoolLiteral;
 import dashbase.ast.literal.NumberLiteral;
 import dashbase.ast.literal.StringLiteral;
@@ -7,7 +8,8 @@ import dashbase.ast.primary.AstPrimary;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static dashbase.bnf.BnfCom.rule;
+import static bnfgenast.bnf.BnfCom.rule;
+
 
 public class BnfComTest {
 

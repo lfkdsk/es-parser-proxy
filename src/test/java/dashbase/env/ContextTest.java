@@ -1,5 +1,7 @@
 package dashbase.env;
 
+import bnfgenast.bnf.BnfCom;
+import bnfgenast.lexer.Lexer;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -7,13 +9,12 @@ import dashbase.ast.AstQueryProgram;
 import dashbase.ast.array.AstArrayProperty;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
-import dashbase.bnf.BnfCom;
 import dashbase.lexer.JustLexer;
 import dashbase.meta.Bind;
 import dashbase.meta.BnfGenerator;
 import dashbase.meta.GrammarMode;
 import dashbase.utils.GrammarHelper;
-import dashbase.utils.logger.Logger;
+import logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -53,7 +54,7 @@ public class ContextTest {
         queryJsonObj.add("match_all", new JsonObject());
         object.add("query", queryJsonObj);
 
-        JustLexer lexer = new JustLexer(object.toString());
+        Lexer lexer = new JustLexer(object.toString());
         lexer.reserved(("query"));
         lexer.reserved(("match_all"));
 
@@ -132,7 +133,7 @@ public class ContextTest {
         Logger.init();
         Logger.v(new GsonBuilder().setPrettyPrinting().create().toJson(object));
 
-        JustLexer lexer = new JustLexer(object.toString());
+        Lexer lexer = new JustLexer(object.toString());
         lexer.reserved("query");
         lexer.reserved("bool");
         lexer.reserved("must");

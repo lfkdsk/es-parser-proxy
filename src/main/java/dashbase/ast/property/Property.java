@@ -1,7 +1,7 @@
 package dashbase.ast.property;
 
+import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
-import dashbase.ast.base.AstNode;
 import dashbase.ast.literal.StringLiteral;
 import dashbase.env.Context;
 import dashbase.meta.Dependency;
@@ -42,10 +42,6 @@ public abstract class Property extends QueryAstList {
         }
     }
 
-    @Override
-    public String target() {
-        return keyNode().value();
-    }
 
     @Override
     public void eval(Context context) {

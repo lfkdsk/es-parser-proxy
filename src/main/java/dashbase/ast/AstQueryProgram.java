@@ -1,8 +1,8 @@
 package dashbase.ast;
 
-import dashbase.ast.base.AstNode;
-import dashbase.env.Context;
+import bnfgenast.ast.base.AstNode;
 import dashbase.ast.object.AstObject;
+import dashbase.env.Context;
 import dashbase.token.Tokens;
 
 import java.util.List;

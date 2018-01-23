@@ -1,24 +1,27 @@
 package dashbase;
 
+import bnfgenast.ast.base.AstNode;
+import bnfgenast.bnf.BnfCom;
+import bnfgenast.lexer.Lexer;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.oracle.javafx.jmx.json.JSONException;
 import dashbase.ast.AstQueryProgram;
-import dashbase.ast.base.AstNode;
+import dashbase.ast.literal.StringLiteral;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
 import dashbase.ast.property.AstPropertyList;
-import dashbase.bnf.BnfCom;
 import dashbase.lexer.JustLexer;
 import dashbase.rules.QueryGrammar;
 import dashbase.utils.GrammarHelper;
-import dashbase.utils.json.JSONException;
-import dashbase.utils.logger.Logger;
+import logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static dashbase.bnf.BnfCom.rule;
-import static dashbase.utils.tools.TextUtils.w;
+import static bnfgenast.bnf.BnfCom.rule;
+import static tools.TextUtils.w;
+
 
 public class QueryGrammarTest {
 
@@ -55,7 +58,7 @@ public class QueryGrammarTest {
         // Use Lexer
         ///////////////////////////////////////////////////////////////////////////
 
-        JustLexer lexer = new JustLexer(unformatJsonString);
+        Lexer lexer = new JustLexer(unformatJsonString);
         QueryGrammar grammar = new QueryGrammar();
         AstNode node = grammar.parse(lexer);
 
@@ -97,8 +100,8 @@ public class QueryGrammarTest {
         QueryGrammar grammar = new QueryGrammar();
 
         BnfCom wrapperPropertyList = rule(AstPropertyList.class)
-                .option(rule(AstObjectProperty.class).literal(w("query")).sep(":").ast(grammar.getObject()).maybe(","))
-                .option(rule(AstObjectProperty.class).literal(w("lfkdsk")).sep(":").ast(grammar.getObject()).maybe(","))
+                .option(rule(AstObjectProperty.class).literal(StringLiteral.class,w("query")).sep(":").ast(grammar.getObject()).maybe(","))
+                .option(rule(AstObjectProperty.class).literal(StringLiteral.class,w("lfkdsk")).sep(":").ast(grammar.getObject()).maybe(","))
                 .option(grammar.getProperty())
                 .repeat(
                         rule().sep(",").repeat(grammar.getProperty())
@@ -114,7 +117,7 @@ public class QueryGrammarTest {
         problem.add("lfkdsk", new JsonObject());
         problem.add("12", new JsonObject());
 
-        JustLexer lexer = new JustLexer(problem.toString());
+        Lexer lexer = new JustLexer(problem.toString());
         lexer.reserved(w("query"));
         lexer.reserved(w("lfkdsk"));
 
@@ -139,14 +142,14 @@ public class QueryGrammarTest {
         problem.addProperty("12", "lfkdsk");
         problem.addProperty("lfkdsk", "lfkdsk");
 
-        JustLexer lexer = new JustLexer(problem.toString());
+        Lexer lexer = new JustLexer(problem.toString());
 
         QueryGrammar grammar = new QueryGrammar();
 
         BnfCom wrapperPropertyList = rule(AstPropertyList.class)
                 .or(
-                        rule(AstObjectProperty.class).literal(("query")).sep(":").ast(grammar.getObject()).maybe(","),
-                        rule(AstObjectProperty.class).literal(("lfkdsk")).sep(":").ast(grammar.getObject()).maybe(","),
+                        rule(AstObjectProperty.class).literal(StringLiteral.class,("query")).sep(":").ast(grammar.getObject()).maybe(","),
+                        rule(AstObjectProperty.class).literal(StringLiteral.class,("lfkdsk")).sep(":").ast(grammar.getObject()).maybe(","),
                         rule(AstPropertyList.class).ast(grammar.getProperty()).repeat(rule().sep(",").repeat(grammar.getProperty()))
                 );
 
@@ -161,7 +164,7 @@ public class QueryGrammarTest {
         JsonObject problem1 = new JsonObject();
         problem1.addProperty("12", "lfkdsk");
 
-        JustLexer lexer1 = new JustLexer(problem1.toString());
+        Lexer lexer1 = new JustLexer(problem1.toString());
         AstNode node1 = wrapperObject.parse(lexer1);
         Assert.assertNotNull(node1);
 

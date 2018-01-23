@@ -1,12 +1,13 @@
 package dashbase.meta;
 
+import bnfgenast.bnf.BnfCom;
 import dashbase.ast.AstQueryProgram;
 import dashbase.ast.array.AstArrayProperty;
+import dashbase.ast.literal.StringLiteral;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
 import dashbase.ast.primary.AstPrimaryProperty;
 import dashbase.ast.property.AstPropertyList;
-import dashbase.bnf.BnfCom;
 import dashbase.rules.QueryGrammar;
 
 import java.util.HashMap;
@@ -14,8 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static dashbase.bnf.BnfCom.rule;
-import static dashbase.utils.tools.TextUtils.w;
+import static bnfgenast.bnf.BnfCom.rule;
+import static tools.TextUtils.w;
+
 
 class BnfHelper {
 
@@ -57,21 +59,21 @@ class BnfHelper {
 
     public static BnfCom primaryProperty(PrimaryDep dep) {
         return rule(AstPrimaryProperty.class).name(dep.getBindMethod().getName())
-                                             .literal(w(dep.getBindMethod().getName()))
+                                             .literal(StringLiteral.class, w(dep.getBindMethod().getName()))
                                              .sep(":")
                                              .ast(staticGrammar.getPrimary());
     }
 
     public static BnfCom objectProperty(Dependency dep, BnfCom object) {
         return rule(AstObjectProperty.class).name(dep.getBindMethod().getName())
-                                            .literal(w(dep.getBindMethod().getName()))
+                                            .literal(StringLiteral.class, w(dep.getBindMethod().getName()))
                                             .sep(":")
                                             .ast(object);
     }
 
     public static BnfCom arrayProperty(ArrayDep dep) {
         return rule(AstArrayProperty.class).name(dep.getBindMethod().getName())
-                                           .literal(w(dep.getBindMethod().getName()))
+                                           .literal(StringLiteral.class, w(dep.getBindMethod().getName()))
                                            .sep(":")
                                            .ast(staticGrammar.getArray());
     }

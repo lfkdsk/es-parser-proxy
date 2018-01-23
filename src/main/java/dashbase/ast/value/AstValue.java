@@ -1,8 +1,8 @@
 package dashbase.ast.value;
 
+import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
 import dashbase.ast.array.AstArray;
-import dashbase.ast.base.AstNode;
 import dashbase.ast.primary.AstPrimary;
 import dashbase.token.Tokens;
 

@@ -1,11 +1,10 @@
 package dashbase.utils;
 
+import bnfgenast.ast.base.AstNode;
 import dashbase.ast.array.AstArray;
-import dashbase.ast.base.AstNode;
 import dashbase.ast.primary.AstPrimary;
 import dashbase.ast.property.AstProperty;
 import dashbase.ast.value.AstValue;
-import dashbase.rules.QueryGrammar;
 
 public class GrammarHelper {
 

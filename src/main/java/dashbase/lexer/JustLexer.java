@@ -1,7 +1,9 @@
 package dashbase.lexer;
 
 
-import dashbase.exception.ParseException;
+import bnfgenast.ast.token.Token;
+import bnfgenast.exception.ParseException;
+import bnfgenast.lexer.Lexer;
 import dashbase.token.*;
 import dashbase.utils.NumberUtils;
 import lombok.Getter;
@@ -19,7 +21,7 @@ import java.util.regex.Pattern;
 
 import static dashbase.lexer.JustRegex.hobbyReg;
 import static dashbase.token.ReservedToken.reversed;
-import static dashbase.utils.tools.TextUtils.toStringLiteral;
+import static tools.TextUtils.toStringLiteral;
 
 /**
  * JustLexer 分词器
@@ -28,7 +30,7 @@ import static dashbase.utils.tools.TextUtils.toStringLiteral;
  *
  * @author liufengkai
  */
-public class JustLexer {
+public class JustLexer implements Lexer {
     private final Pattern regPattern = Pattern.compile(hobbyReg);
 
     private final LinkedList<Token> queue = new LinkedList<>();
@@ -85,6 +87,7 @@ public class JustLexer {
      * @return 返回第一个Token
      * @throws ParseException
      */
+    @Override
     public Token read() throws ParseException {
         if (fillQueue(0)) {
             return queue.remove(0);
@@ -101,6 +104,7 @@ public class JustLexer {
      * @return 返回Token
      * @throws ParseException
      */
+    @Override
     public Token peek(int index) throws ParseException {
         if (fillQueue(index)) {
             return queue.get(index);
@@ -276,6 +280,7 @@ public class JustLexer {
      *
      * @return all-tokens
      */
+    @Override
     public Queue<Token> tokens() {
         while (hasMore) {
             readLine();
@@ -284,14 +289,17 @@ public class JustLexer {
         return queue;
     }
 
+    @Override
     public void reserved(String token) {
         this.reservedToken.add(token);
     }
 
+    @Override
     public void backup() {
         this.backup = new JustLexer(this);
     }
 
+    @Override
     public void recover() {
         if (backup != null) {
             this.reader.setLineNumber(backup.lineNumber);

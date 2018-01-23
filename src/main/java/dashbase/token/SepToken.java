@@ -1,5 +1,8 @@
 package dashbase.token;
 
+
+import bnfgenast.ast.token.Token;
+
 import java.util.HashMap;
 import java.util.Map;
 

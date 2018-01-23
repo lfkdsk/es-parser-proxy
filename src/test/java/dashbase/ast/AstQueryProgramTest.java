@@ -2,8 +2,6 @@ package dashbase.ast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import dashbase.ast.base.AstNode;
-import dashbase.ast.property.Property;
 import org.junit.Test;
 
 import static dashbase.TestUtils.runGrammar;
@@ -18,7 +16,6 @@ public class AstQueryProgramTest {
         object.add("query", query);
 
         AstQueryProgram program = runGrammar(object.toString());
-        print(program);
     }
 
     @Test
@@ -46,15 +43,5 @@ public class AstQueryProgramTest {
         problem.add("7", object7);
 
         AstQueryProgram program = runGrammar(problem.toString());
-        print(program);
-    }
-
-    private void print(AstNode root) {
-        for (AstNode node : root) {
-            if (node instanceof Property)
-                System.out.println("node : " + node.toString() + "  path : " + node.path());
-
-            print(node);
-        }
     }
 }

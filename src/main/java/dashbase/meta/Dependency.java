@@ -1,6 +1,6 @@
 package dashbase.meta;
 
-import dashbase.bnf.BnfCom;
+import bnfgenast.bnf.BnfCom;
 import lombok.Getter;
 
 import java.util.Collections;

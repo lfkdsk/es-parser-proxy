@@ -1,6 +1,6 @@
 package dashbase.lexer;
 
-import dashbase.token.Token;
+import bnfgenast.ast.token.Token;
 import org.junit.Assert;
 import org.junit.Test;
 

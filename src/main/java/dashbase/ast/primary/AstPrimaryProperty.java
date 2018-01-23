@@ -1,9 +1,9 @@
 package dashbase.ast.primary;
 
-import dashbase.ast.base.AstNode;
+import bnfgenast.ast.base.AstNode;
+import bnfgenast.ast.token.Token;
 import dashbase.ast.literal.Literal;
 import dashbase.ast.property.Property;
-import dashbase.token.Token;
 import dashbase.token.Tokens;
 
 import java.util.List;

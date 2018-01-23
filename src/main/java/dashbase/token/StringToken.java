@@ -1,5 +1,8 @@
 package dashbase.token;
 
+
+import bnfgenast.ast.token.Token;
+
 /**
  * String Token.
  * used in lexer => will be add to spec Literal.

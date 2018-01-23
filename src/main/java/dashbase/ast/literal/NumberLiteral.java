@@ -1,8 +1,8 @@
 package dashbase.ast.literal;
 
-import dashbase.exception.ParseException;
+import bnfgenast.ast.token.Token;
+import bnfgenast.exception.ParseException;
 import dashbase.token.NumberToken;
-import dashbase.token.Token;
 
 /**
  * Number Literal.

@@ -1,5 +1,8 @@
 package dashbase.token;
 
+
+import bnfgenast.ast.token.Token;
+
 /**
  * ID Token.
  *

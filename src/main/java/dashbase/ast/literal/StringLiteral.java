@@ -1,7 +1,7 @@
 package dashbase.ast.literal;
 
 
-import dashbase.token.Token;
+import bnfgenast.ast.token.Token;
 
 /**
  * String Literal =>

@@ -1,10 +1,10 @@
 package dashbase.meta;
 
-import dashbase.bnf.BnfCom;
+import bnfgenast.bnf.BnfCom;
 import dashbase.env.Context;
 import dashbase.utils.ObjectHelper;
-import dashbase.utils.tools.TextUtils;
 import lombok.Getter;
+import tools.TextUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

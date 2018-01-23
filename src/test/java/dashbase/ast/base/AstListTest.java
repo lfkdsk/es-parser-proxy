@@ -1,5 +1,7 @@
 package dashbase.ast.base;
 
+import bnfgenast.ast.base.AstList;
+import bnfgenast.ast.base.AstNode;
 import org.junit.Assert;
 import org.junit.Test;
 

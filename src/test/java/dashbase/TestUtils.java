@@ -1,11 +1,12 @@
 package dashbase;
 
+import bnfgenast.lexer.Lexer;
 import dashbase.ast.AstQueryProgram;
 import dashbase.lexer.JustLexer;
 import dashbase.rules.QueryGrammar;
 
 public class TestUtils {
-    public static JustLexer createJustLexer(String expr) {
+    public static Lexer createJustLexer(String expr) {
         return new JustLexer(expr);
     }
 
@@ -14,7 +15,7 @@ public class TestUtils {
     }
 
     public static AstQueryProgram runGrammar(String expr) {
-        JustLexer lexer = createJustLexer(expr);
+        Lexer lexer = createJustLexer(expr);
         QueryGrammar grammar = createGrammar();
 
         return grammar.parse(lexer);

@@ -1,7 +1,7 @@
 package dashbase.exception;
 
 
-import dashbase.ast.base.AstNode;
+import bnfgenast.ast.base.AstNode;
 
 /**
  * Compiler Exception

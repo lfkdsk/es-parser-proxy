@@ -1,10 +1,10 @@
 package dashbase.ast.object;
 
+import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
-import dashbase.ast.base.AstNode;
-import dashbase.env.Context;
 import dashbase.ast.property.AstPropertyList;
 import dashbase.ast.property.Property;
+import dashbase.env.Context;
 import dashbase.token.Tokens;
 
 import java.util.Collections;
@@ -30,7 +30,7 @@ public class AstObject extends QueryAstList {
     @Override
     public void eval(Context context) {
         for (AstNode node : propertyList()) {
-            node.eval(context);
+            ((QueryAstList) node).eval(context);
         }
     }
 }

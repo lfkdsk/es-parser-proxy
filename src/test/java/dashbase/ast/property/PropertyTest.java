@@ -1,16 +1,17 @@
 package dashbase.ast.property;
 
+import bnfgenast.bnf.BnfCom;
+import bnfgenast.lexer.Lexer;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import dashbase.ast.AstQueryProgram;
 import dashbase.ast.object.AstObjectProperty;
-import dashbase.bnf.BnfCom;
 import dashbase.env.Context;
 import dashbase.lexer.JustLexer;
 import dashbase.meta.Bind;
 import dashbase.meta.BnfGenerator;
 import dashbase.utils.GrammarHelper;
-import dashbase.utils.logger.Logger;
+import logger.Logger;
 import org.junit.Test;
 
 import static dashbase.meta.GrammarMode.OBJECT;
@@ -155,7 +156,7 @@ public class PropertyTest {
         wrapper.add("query", query);
 
         Logger.v(new GsonBuilder().setPrettyPrinting().create().toJson(wrapper));
-        JustLexer lexer = new JustLexer(wrapper.toString());
+        Lexer lexer = new JustLexer(wrapper.toString());
         lexer.reserved("query");
         lexer.reserved("match_all");
 
@@ -184,7 +185,7 @@ public class PropertyTest {
                 "}";
 
         Logger.v(demo);
-        JustLexer lexer = new JustLexer(demo);
+        Lexer lexer = new JustLexer(demo);
         lexer.reserved("query");
         lexer.reserved("match_all");
         lexer.reserved("must");

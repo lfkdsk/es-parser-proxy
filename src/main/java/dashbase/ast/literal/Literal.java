@@ -1,8 +1,8 @@
 package dashbase.ast.literal;
 
 
-import dashbase.ast.base.AstLeaf;
-import dashbase.token.Token;
+import bnfgenast.ast.base.AstLeaf;
+import bnfgenast.ast.token.Token;
 
 /**
  * Literal is an AstLeaf.

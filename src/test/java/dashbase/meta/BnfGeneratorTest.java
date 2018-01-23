@@ -1,11 +1,12 @@
 package dashbase.meta;
 
+import bnfgenast.bnf.BnfCom;
+import bnfgenast.lexer.Lexer;
 import com.google.gson.JsonObject;
 import dashbase.ast.AstQueryProgram;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
 import dashbase.ast.property.AstPropertyList;
-import dashbase.bnf.BnfCom;
 import dashbase.env.Context;
 import dashbase.lexer.JustLexer;
 import dashbase.utils.GrammarHelper;
@@ -77,7 +78,7 @@ public class BnfGeneratorTest {
         object.add("filter", new JsonObject());
         object.add("query", new JsonObject());
 
-        JustLexer lexer = new JustLexer(object.toString());
+        Lexer lexer = new JustLexer(object.toString());
         lexer.reserved(("query"));
         lexer.reserved(("filter"));
 
