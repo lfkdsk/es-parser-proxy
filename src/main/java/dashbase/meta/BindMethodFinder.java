@@ -89,13 +89,14 @@ public class BindMethodFinder {
                         GrammarMode mode = bindAnnotation.mode();
 
                         if (findState.checkAdd(nodeType, mode)) {
-                            findState.subscriberMethods.add(new BindMethod(
-                                    bindAnnotation.name(),
-                                    bindAnnotation.prefix(),
-                                    mode,
-                                    method,
-                                    bindAnnotation.insert(),
-                                    instance));
+                            findState.subscriberMethods.add(
+                                    new BindMethod(
+                                            bindAnnotation.name(),
+                                            bindAnnotation.prefix(),
+                                            mode,
+                                            method,
+                                            bindAnnotation.insert(),
+                                            instance));
                         }
                     }
                 } else if (method.isAnnotationPresent(Bind.class)) {

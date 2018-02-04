@@ -25,7 +25,5 @@ public abstract class Dependency {
         }
     }
 
-    public BnfCom create() {
-        return null;
-    }
+    public abstract BnfCom create();
 }

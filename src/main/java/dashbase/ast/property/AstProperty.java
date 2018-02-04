@@ -11,6 +11,7 @@ import java.util.List;
  * Property Parent Node
  * property := primary | object | array
  * 这个类不会出现在 AST 结构当中
+ *
  * @author liufengkai
  * @see dashbase.ast.primary.AstPrimaryProperty
  * @see dashbase.ast.object.AstObjectProperty
@@ -19,7 +20,7 @@ import java.util.List;
 public class AstProperty extends QueryAstList {
 
     public enum PropertyType {
-        PRIMARY, OBJECT, ARRAY
+        PRIMARY, OBJECT, ARRAY, ALL
     }
 
     public AstProperty(List<AstNode> children) {
@@ -43,6 +44,9 @@ public class AstProperty extends QueryAstList {
             default:
             case Tokens.AST_OBJECT_PROPERTY: {
                 return PropertyType.OBJECT;
+            }
+            case Tokens.AST_ALL_PROPERTY: {
+                return PropertyType.ALL;
             }
         }
     }

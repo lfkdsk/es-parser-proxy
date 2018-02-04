@@ -126,6 +126,7 @@ public class PropertyTest {
 
         @Bind(name = "must", mode = OBJECT, prefix = "bool", insert = "query")
         public void must(AstObjectProperty property, Context context) {
+            System.out.println(" Call Must ");
             System.out.println(property.object()
                                        .property("term")
                                        .valueNode()
@@ -134,6 +135,7 @@ public class PropertyTest {
 
         @Bind(name = "filter", mode = OBJECT, prefix = "bool", insert = "query")
         public void filter(AstObjectProperty property, Context context) {
+            System.out.println(" Call Filter ");
             System.out.println(property.object()
                                        .property("term")
                                        .valueNode()

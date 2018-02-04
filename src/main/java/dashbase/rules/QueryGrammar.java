@@ -110,6 +110,7 @@ public class QueryGrammar {
     // literal := literal | object | property
     ///////////////////////////////////////////////////////////////////////////
 
+    @Getter
     private BnfCom value = wrapper().or(
             primary,
             object,
@@ -145,40 +146,6 @@ public class QueryGrammar {
     private BnfCom propertyList = propertyList0.reset(AstPropertyList.class).ast(property).repeat(
             rule().sep(",").repeat(property)
     );
-
-//    private BnfCom matchAll = rule().wrap("match_all").sep(":").ast(object);
-//
-//    private BnfCom matchNone = rule().wrap("match_none").sep(":").sep("{").sep("}");
-//
-//    private BnfCom match = rule(MatchLabel.class).wrap("match").sep(":").sep("{").ast(primaryProperty).sep("}");
-//
-//    private BnfCom matchQueryPhrase = rule().wrap("match_phrase").sep(":").sep("{").ast(primaryProperty).sep("}");
-//
-//    private BnfCom matchPhrasePrefix = rule().wrap("match_phrase_prefix").sep(":").sep("{").ast(primaryProperty).sep("}");
-//
-//    private BnfCom multiMatch = rule().wrap("multi_match").sep(":").sep("{").ast(primaryProperty).sep("}");
-//
-//    private BnfCom boolQuery = rule().wrap("bool").sep(":").sep("{").ast(object).sep("}");
-//
-//    private BnfCom commonQuery = rule().wrap("common").sep(":").sep("{").ast(object).sep("}");
-//
-//    private BnfCom queryString = rule().wrap("query_string").sep(":").sep("{").ast(primaryProperty).sep("}");
-//
-//    @Getter
-//    private BnfCom query = rule(QueryLabel.class).wrap("query").sep(":").sep("{").or(
-//            match,
-//            matchAll,
-//            matchNone,
-//            matchQueryPhrase,
-//            matchPhrasePrefix,
-//            multiMatch,
-//            boolQuery,
-//            commonQuery,
-//            queryString
-//    ).sep("}");
-//
-//    private BnfCom innerProgram = rule().maybe(query);
-
 
     ///////////////////////////////////////////////////////////////////////////
     // object = {

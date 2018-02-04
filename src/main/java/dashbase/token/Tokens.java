@@ -19,6 +19,7 @@ public class Tokens {
     public static final int AST_OBJECT_PROPERTY = 3014;
     public static final int PROPERTY = 3015;
     public static final int PROPERTY_PARENT = 3016;
+    public static final int AST_ALL_PROPERTY = 3017;
 
     public static final int AMPERSAND_OP = 600;
 

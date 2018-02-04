@@ -3,10 +3,8 @@ package dashbase.env;
 import bnfgenast.bnf.BnfCom;
 import bnfgenast.lexer.Lexer;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dashbase.ast.AstQueryProgram;
-import dashbase.ast.array.AstArrayProperty;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
 import dashbase.lexer.JustLexer;
@@ -92,14 +90,14 @@ public class ContextTest {
             System.out.println(" run bool ");
         }
 
-        @Bind(name = "must", mode = GrammarMode.OBJECT, prefix = {"bool"}, insert = "query")
-        public void must(AstObjectProperty property, Context context) {
-            System.out.println(" run must ");
-        }
+//        @Bind(name = "must", mode = GrammarMode.OBJECT, prefix = {"bool"}, insert = "query")
+//        public void must(AstObjectProperty property, Context context) {
+//            System.out.println(" run must ");
+//        }
 
-        @Bind(name = "must", mode = GrammarMode.ARRAY, prefix = {"bool"}, insert = "query")
-        public void must1(AstArrayProperty property, Context context) {
-            System.out.println(" run must [] ");
+        @Bind(name = "must", mode = GrammarMode.OBJECT, prefix = {"bool"}, insert = "query")
+        public void must1(AstObjectProperty property, Context context) {
+            System.out.println(" run must {} ");
         }
     }
 
@@ -110,7 +108,7 @@ public class ContextTest {
         generator.register(FinderDemo3.class);
 
         Assert.assertNotNull(generator);
-        Assert.assertEquals(generator.getTokensBindMethods().size(), 5);
+        Assert.assertEquals(generator.getTokensBindMethods().size(), 4);
 
 
         JsonObject object = new JsonObject();
@@ -120,7 +118,7 @@ public class ContextTest {
         JsonObject subQuery = new JsonObject();
         subQuery.add("bool", new JsonObject());
 
-        must.add("must", new JsonArray());
+        must.add("must", new JsonObject());
 
 //        JsonObject mustArray = new JsonObject();
 //        mustArray.add("must", new JsonArray());
@@ -132,7 +130,7 @@ public class ContextTest {
         Logger.init();
         Logger.v(new GsonBuilder().setPrettyPrinting().create().toJson(object));
 
-        Lexer lexer = new JustLexer(object.toString());
+        Lexer lexer = new JustLexer(new GsonBuilder().setPrettyPrinting().create().toJson(object));
         lexer.reserved("query");
         lexer.reserved("bool");
         lexer.reserved("must");
@@ -142,6 +140,5 @@ public class ContextTest {
         Assert.assertNotNull(program);
 
         program.eval(generator.context());
-
     }
 }
