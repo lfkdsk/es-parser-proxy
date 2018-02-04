@@ -61,5 +61,4 @@ public class JustRegex {
             variable,
             symbol
     );
-
 }

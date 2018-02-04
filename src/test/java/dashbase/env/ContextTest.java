@@ -13,7 +13,6 @@ import dashbase.lexer.JustLexer;
 import dashbase.meta.Bind;
 import dashbase.meta.BnfGenerator;
 import dashbase.meta.GrammarMode;
-import dashbase.utils.GrammarHelper;
 import logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,7 +58,7 @@ public class ContextTest {
         lexer.reserved(("match_all"));
 
         BnfCom bnfCom = generator.generate();
-        AstQueryProgram program = (AstQueryProgram) GrammarHelper.transformAst(bnfCom.parse(lexer));
+        AstQueryProgram program = (AstQueryProgram) (bnfCom.parse(lexer));
 
         Assert.assertNotNull(program);
 
@@ -139,7 +138,7 @@ public class ContextTest {
         lexer.reserved("must");
 
         BnfCom bnfCom = generator.generate();
-        AstQueryProgram program = (AstQueryProgram) GrammarHelper.transformAst(bnfCom.parse(lexer));
+        AstQueryProgram program = (AstQueryProgram) (bnfCom.parse(lexer));
         Assert.assertNotNull(program);
 
         program.eval(generator.context());

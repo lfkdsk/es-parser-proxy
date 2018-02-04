@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static bnfgenast.bnf.BnfCom.rule;
-import static tools.TextUtils.w;
+import static bnfgenast.utils.TextUtils.w;
 
 
 class BnfHelper {

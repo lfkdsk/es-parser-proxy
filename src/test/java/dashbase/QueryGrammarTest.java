@@ -14,7 +14,6 @@ import dashbase.ast.object.AstObjectProperty;
 import dashbase.ast.property.AstPropertyList;
 import dashbase.lexer.JustLexer;
 import dashbase.rules.QueryGrammar;
-import dashbase.utils.GrammarHelper;
 import logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -121,7 +120,7 @@ public class QueryGrammarTest {
         lexer.reserved(w("query"));
         lexer.reserved(w("lfkdsk"));
 
-        AstObject node = (AstObject) GrammarHelper.transformAst(wrapperObject.parse(lexer));
+        AstObject node = (AstObject) (wrapperObject.parse(lexer));
         Assert.assertNotNull(node);
 
         AstPropertyList list = node.propertyList();

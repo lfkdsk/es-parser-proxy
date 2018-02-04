@@ -19,9 +19,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static bnfgenast.utils.TextUtils.toStringLiteral;
 import static dashbase.lexer.JustRegex.hobbyReg;
 import static dashbase.token.ReservedToken.reversed;
-import static tools.TextUtils.toStringLiteral;
 
 /**
  * JustLexer 分词器

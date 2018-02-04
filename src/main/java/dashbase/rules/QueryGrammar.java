@@ -3,23 +3,19 @@ package dashbase.rules;
 import bnfgenast.bnf.BnfCom;
 import bnfgenast.lexer.Lexer;
 import dashbase.ast.AstQueryProgram;
-import dashbase.ast.array.AstArray;
 import dashbase.ast.array.AstArrayProperty;
 import dashbase.ast.literal.BoolLiteral;
 import dashbase.ast.literal.NumberLiteral;
 import dashbase.ast.literal.StringLiteral;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.object.AstObjectProperty;
-import dashbase.ast.primary.AstPrimary;
 import dashbase.ast.primary.AstPrimaryProperty;
-import dashbase.ast.property.AstProperty;
 import dashbase.ast.property.AstPropertyList;
-import dashbase.ast.value.AstValue;
 import dashbase.ast.value.AstValueList;
 import lombok.Getter;
 
 import static bnfgenast.bnf.BnfCom.rule;
-import static dashbase.utils.GrammarHelper.transformAst;
+import static bnfgenast.bnf.BnfCom.wrapper;
 
 public class QueryGrammar {
 
@@ -50,7 +46,7 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     @Getter
-    private BnfCom primary = rule(AstPrimary.class).or(
+    private BnfCom primary = wrapper().or( // remove AstPrimary.class
             number,
             string,
             bool
@@ -98,9 +94,9 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     @Getter
-    private BnfCom array = rule(AstArray.class).sep("[")
-                                               .maybe(valueList0)
-                                               .sep("]");
+    private BnfCom array = wrapper().sep("[")
+                                    .maybe(valueList0)
+                                    .sep("]");
 
     ///////////////////////////////////////////////////////////////////////////
     // array property := string : array
@@ -114,7 +110,7 @@ public class QueryGrammar {
     // literal := literal | object | property
     ///////////////////////////////////////////////////////////////////////////
 
-    private BnfCom value = rule(AstValue.class).or(
+    private BnfCom value = wrapper().or(
             primary,
             object,
             array
@@ -125,7 +121,7 @@ public class QueryGrammar {
     ///////////////////////////////////////////////////////////////////////////
 
     @Getter
-    private BnfCom property = rule(AstProperty.class).prefix(
+    private BnfCom property = wrapper().prefix( // remove AstProperty.class
             primaryProperty,
             arrayProperty,
             objectProperty
@@ -193,6 +189,6 @@ public class QueryGrammar {
     private BnfCom program = rule(AstQueryProgram.class).ast(object);
 
     public AstQueryProgram parse(Lexer lexer) {
-        return (AstQueryProgram) transformAst(program.parse(lexer));
+        return (AstQueryProgram) program.parse(lexer);
     }
 }

@@ -9,7 +9,6 @@ import dashbase.ast.object.AstObjectProperty;
 import dashbase.ast.property.AstPropertyList;
 import dashbase.env.Context;
 import dashbase.lexer.JustLexer;
-import dashbase.utils.GrammarHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -83,7 +82,7 @@ public class BnfGeneratorTest {
         lexer.reserved(("filter"));
 
         BnfCom bnfCom = generator.generate();
-        AstQueryProgram program = (AstQueryProgram) GrammarHelper.transformAst(bnfCom.parse(lexer));
+        AstQueryProgram program = (AstQueryProgram) (bnfCom.parse(lexer));
 
         Assert.assertNotNull(program);
 

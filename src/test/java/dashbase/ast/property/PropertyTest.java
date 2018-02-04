@@ -10,7 +10,6 @@ import dashbase.env.Context;
 import dashbase.lexer.JustLexer;
 import dashbase.meta.Bind;
 import dashbase.meta.BnfGenerator;
-import dashbase.utils.GrammarHelper;
 import logger.Logger;
 import org.junit.Test;
 
@@ -161,7 +160,7 @@ public class PropertyTest {
         lexer.reserved("match_all");
 
         BnfCom bnfCom = generator.generate();
-        AstQueryProgram program = (AstQueryProgram) GrammarHelper.transformAst(bnfCom.parse(lexer));
+        AstQueryProgram program = (AstQueryProgram) (bnfCom.parse(lexer));
         program.eval(generator.context());
     }
 
@@ -194,7 +193,7 @@ public class PropertyTest {
         lexer.reserved("filter");
 
         BnfCom bnfCom = generator.generate();
-        AstQueryProgram program = (AstQueryProgram) GrammarHelper.transformAst(bnfCom.parse(lexer));
+        AstQueryProgram program = (AstQueryProgram) (bnfCom.parse(lexer));
         program.eval(generator.context());
     }
 }

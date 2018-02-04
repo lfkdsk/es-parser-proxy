@@ -18,5 +18,5 @@ dependencies {
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
     compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
     compile 'com.github.lfkdsk:sweet-logger:v1.01'
-    compile 'com.github.lfkdsk:bnf-ast:v3.01'
+    compile 'com.github.lfkdsk:bnf-ast:v3.10'
 }
