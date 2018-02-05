@@ -1,4 +1,4 @@
-package dashbase.token;
+package dashbase.ast.token;
 
 public class Tokens {
     public static final int AST_PRIMARY = 3000;

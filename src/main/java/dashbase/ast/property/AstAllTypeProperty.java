@@ -2,7 +2,7 @@ package dashbase.ast.property;
 
 import bnfgenast.ast.base.AstNode;
 import dashbase.env.Context;
-import dashbase.token.Tokens;
+import dashbase.ast.token.Tokens;
 
 import java.util.List;
 

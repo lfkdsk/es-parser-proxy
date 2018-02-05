@@ -5,7 +5,7 @@ import dashbase.ast.QueryAstList;
 import dashbase.ast.property.AstPropertyList;
 import dashbase.ast.property.Property;
 import dashbase.env.Context;
-import dashbase.token.Tokens;
+import dashbase.ast.token.Tokens;
 
 import java.util.Collections;
 import java.util.List;

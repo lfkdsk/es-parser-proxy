@@ -2,7 +2,7 @@ package dashbase.utils;
 
 
 import bnfgenast.ast.token.Token;
-import dashbase.token.NumberToken;
+import dashbase.ast.token.NumberToken;
 
 /**
  * Parser Number.

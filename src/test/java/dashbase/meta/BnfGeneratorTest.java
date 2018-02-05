@@ -37,7 +37,6 @@ public class BnfGeneratorTest {
         Assert.assertNotNull(generator);
         Assert.assertEquals(generator.getTokensBindMethods().size(), 2);
 
-
         generator.sortMapToTree();
         Assert.assertEquals(generator.getTokensBindMethods()
                                      .get("wrapper[WRAPPER]")

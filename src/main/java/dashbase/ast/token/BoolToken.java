@@ -1,5 +1,5 @@
 
-package dashbase.token;
+package dashbase.ast.token;
 
 
 import bnfgenast.exception.UnSupportMethodException;

@@ -4,7 +4,7 @@ import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
 import dashbase.ast.literal.Literal;
 import dashbase.ast.object.AstObject;
-import dashbase.token.Tokens;
+import dashbase.ast.token.Tokens;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -4,7 +4,7 @@ import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
 import dashbase.ast.literal.StringLiteral;
 import dashbase.env.Context;
-import dashbase.token.Tokens;
+import dashbase.ast.token.Tokens;
 import lombok.Setter;
 
 import java.util.List;

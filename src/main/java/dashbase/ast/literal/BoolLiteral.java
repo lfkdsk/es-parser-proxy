@@ -4,8 +4,8 @@ package dashbase.ast.literal;
 
 import bnfgenast.ast.token.Token;
 
-import static dashbase.token.BoolToken.BooleanEnum.TRUE;
-import static dashbase.token.BoolToken.booleanValue;
+import static dashbase.ast.token.BoolToken.BooleanEnum.TRUE;
+import static dashbase.ast.token.BoolToken.booleanValue;
 
 /**
  * Boolean Literal => Support two Boolean Value.

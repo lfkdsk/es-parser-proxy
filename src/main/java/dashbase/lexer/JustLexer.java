@@ -4,7 +4,7 @@ package dashbase.lexer;
 import bnfgenast.ast.token.Token;
 import bnfgenast.exception.ParseException;
 import bnfgenast.lexer.Lexer;
-import dashbase.token.*;
+import dashbase.ast.token.*;
 import dashbase.utils.NumberUtils;
 import lombok.Getter;
 
@@ -20,8 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static bnfgenast.utils.TextUtils.toStringLiteral;
+import static dashbase.ast.token.ReservedToken.reversed;
 import static dashbase.lexer.JustRegex.hobbyReg;
-import static dashbase.token.ReservedToken.reversed;
 
 /**
  * JustLexer 分词器

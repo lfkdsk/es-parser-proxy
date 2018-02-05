@@ -3,7 +3,7 @@ package dashbase.ast.primary;
 import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
 import dashbase.ast.literal.Literal;
-import dashbase.token.Tokens;
+import dashbase.ast.token.Tokens;
 
 import java.util.List;
 

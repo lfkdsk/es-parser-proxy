@@ -1,4 +1,4 @@
-package dashbase.token;
+package dashbase.ast.token;
 
 
 import bnfgenast.ast.token.Token;
