@@ -25,7 +25,7 @@ import static dashbase.lexer.JustRegex.hobbyReg;
 
 /**
  * JustLexer 分词器
- * Use read() && peek() to get next token
+ * Use read() and peek() to get next token
  * Use tokens() to get all tokens one time
  *
  * @author liufengkai

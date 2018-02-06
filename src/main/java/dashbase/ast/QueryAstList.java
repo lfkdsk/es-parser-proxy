@@ -10,10 +10,10 @@ import java.util.List;
 
 public class QueryAstList extends AstList implements Evaluable {
 
-
     public QueryAstList(List<AstNode> children, int tag) {
         super(children, tag);
     }
+
 
     @Override
     public void eval(Context context) {

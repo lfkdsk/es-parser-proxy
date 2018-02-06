@@ -4,7 +4,7 @@ package dashbase.ast.literal;
 import bnfgenast.ast.token.Token;
 
 /**
- * String Literal =>
+ * String Literal to
  * - "lfkdsk"
  * - "\"lfkdsk\""
  *

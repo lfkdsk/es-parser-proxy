@@ -6,7 +6,7 @@ import bnfgenast.ast.token.Token;
 
 /**
  * ID Literal.
- * => The Language support's ID Literal
+ * The Language support's ID Literal
  *
  * @author liufengkai
  *         Created by liufengkai on 2017/7/26.

@@ -12,6 +12,10 @@ import java.util.function.BiConsumer;
 
 public abstract class Property extends QueryAstList {
 
+    public enum PropertyType {
+        PRIMARY, OBJECT, ARRAY, ALL
+    }
+
     @Setter
     private BiConsumer<Property, Context> callback;
 
@@ -27,53 +31,28 @@ public abstract class Property extends QueryAstList {
         return child(1);
     }
 
-    public AstProperty.PropertyType type() {
+    public PropertyType type() {
         int tag = this.getTag();
 
         switch (tag) {
             case Tokens.AST_PRIMARY_PROPERTY: {
-                return AstProperty.PropertyType.PRIMARY;
+                return PropertyType.PRIMARY;
             }
             case Tokens.AST_ARRAY_PROPERTY: {
-                return AstProperty.PropertyType.ARRAY;
+                return PropertyType.ARRAY;
             }
             default:
             case Tokens.AST_OBJECT_PROPERTY: {
-                return AstProperty.PropertyType.OBJECT;
+                return PropertyType.OBJECT;
             }
             case Tokens.AST_ALL_PROPERTY: {
-                return AstProperty.PropertyType.ALL;
+                return PropertyType.ALL;
             }
         }
     }
 
     @Override
     public void eval(Context context) {
-//        String type;
-//        switch (getTag()) {
-//            case Tokens.AST_PRIMARY_PROPERTY: {
-//                type = "[" + GrammarMode.PRIMARY.name() + "]";
-//                break;
-//            }
-//            case Tokens.AST_ARRAY_PROPERTY: {
-//                type = "[" + GrammarMode.ARRAY.name() + "]";
-//                break;
-//            }
-//            default:
-//            case Tokens.AST_OBJECT_PROPERTY: {
-//                type = "[" + GrammarMode.OBJECT.name() + "]";
-//                break;
-//            }
-//        }
-//
-//        Dependency method = context.getEvals().get(keyNode().value() + type);
-//        if (method != null) {
-//            try {
-//                method.getBindMethod().getMethod().invoke(method.getBindMethod().getInstance(), this, context);
-//            } catch (IllegalAccessException | InvocationTargetException e) {
-//                e.printStackTrace();
-//            }
-//        }
         if (callback != null) {
             callback.accept(this, context);
         }

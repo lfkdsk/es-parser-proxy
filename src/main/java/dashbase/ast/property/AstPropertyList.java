@@ -2,8 +2,8 @@ package dashbase.ast.property;
 
 import bnfgenast.ast.base.AstNode;
 import dashbase.ast.QueryAstList;
-import dashbase.env.Context;
 import dashbase.ast.token.Tokens;
+import dashbase.env.Context;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,11 +31,6 @@ public class AstPropertyList extends QueryAstList {
         for (AstNode child : children) {
             int tag = child.getTag();
             switch (tag) {
-                case Tokens.PROPERTY: {
-                    Property property = ((AstProperty) child).property();
-                    properties.put(property.keyNode().value(), property);
-                    break;
-                }
                 case Tokens.AST_ARRAY_PROPERTY:
                 case Tokens.AST_OBJECT_PROPERTY:
                 case Tokens.AST_PRIMARY_PROPERTY: {

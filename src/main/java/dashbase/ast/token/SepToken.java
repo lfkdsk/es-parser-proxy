@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Token the lexer will skip & reuse.
+ * Token the lexer will skip and reuse.
  *
  * @author liufengkai
  * Created by liufengkai on 2017/7/24.

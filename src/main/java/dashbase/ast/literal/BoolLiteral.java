@@ -8,7 +8,7 @@ import static dashbase.ast.token.BoolToken.BooleanEnum.TRUE;
 import static dashbase.ast.token.BoolToken.booleanValue;
 
 /**
- * Boolean Literal => Support two Boolean Value.
+ * Boolean Literal to Support two Boolean Value.
  * - true
  * - false
  *

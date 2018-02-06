@@ -10,7 +10,7 @@ public interface Evaluable {
     /**
      * call this node
      *
-     * @param context context =>
+     * @param context context
      */
     void eval(Context context);
 }

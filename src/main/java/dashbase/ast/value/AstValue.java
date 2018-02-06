@@ -13,6 +13,7 @@ import java.util.List;
  * 中间层 不出现在 AST 中
  * @author liufengkai
  */
+@Deprecated
 public class AstValue extends QueryAstList {
     public AstValue(List<AstNode> children) {
         super(children, Tokens.AST_VALUE);
@@ -22,7 +23,6 @@ public class AstValue extends QueryAstList {
         AstNode node = child(0);
         int tag = node.getTag();
         switch (tag) {
-
             case Tokens.AST_ARRAY: {
                 return ((AstArray) node).list();
             }

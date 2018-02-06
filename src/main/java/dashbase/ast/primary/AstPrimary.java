@@ -14,6 +14,7 @@ import java.util.List;
  *
  * @author liufengkai
  */
+@Deprecated
 public class AstPrimary extends QueryAstList {
 
     public AstPrimary(List<AstNode> children) {

@@ -15,7 +15,7 @@ public class AstQueryProgram extends QueryAstList {
 
     public AstObject object() {
         // starter is an object-label
-        return (AstObject) this.child(0);
+        return (AstObject) child(0);
     }
 
     @Override

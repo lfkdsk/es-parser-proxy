@@ -57,7 +57,7 @@ public final class ObjectHelper {
      * @return the comparison result
      */
     public static int compare(int v1, int v2) {
-        return v1 < v2 ? -1 : (v1 > v2 ? 1 : 0);
+        return Integer.compare(v1, v2);
     }
 
     /**
@@ -67,7 +67,7 @@ public final class ObjectHelper {
      * @return the comparison result
      */
     public static int compare(long v1, long v2) {
-        return v1 < v2 ? -1 : (v1 > v2 ? 1 : 0);
+        return Long.compare(v1, v2);
     }
 
     static final BiPredicate<Object, Object> EQUALS = new BiObjectPredicate();

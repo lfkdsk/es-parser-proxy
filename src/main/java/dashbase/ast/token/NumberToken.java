@@ -16,8 +16,8 @@ import bnfgenast.ast.token.Token;
 public class NumberToken extends Token {
 
     /**
-     * name => string
-     * ep: 1000 => "1000" \ 111.22 => "111.22"
+     * name to string
+     * ep: 1000 to "1000" \ 111.22 to "111.22"
      */
     private String tokenString;
 
@@ -31,7 +31,7 @@ public class NumberToken extends Token {
      *
      * @param lineNumber  location
      * @param tag         token.tag
-     * @param tokenString name => string
+     * @param tokenString name to string
      * @param value       number name
      */
     public NumberToken(int lineNumber, int tag,

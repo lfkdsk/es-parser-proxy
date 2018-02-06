@@ -4,11 +4,11 @@ import bnfgenast.bnf.BnfCom;
 import dashbase.ast.literal.BoolLiteral;
 import dashbase.ast.literal.NumberLiteral;
 import dashbase.ast.literal.StringLiteral;
-import dashbase.ast.primary.AstPrimary;
 import org.junit.Assert;
 import org.junit.Test;
 
 import static bnfgenast.bnf.BnfCom.rule;
+import static bnfgenast.bnf.BnfCom.wrapper;
 
 
 public class BnfComTest {
@@ -21,13 +21,13 @@ public class BnfComTest {
 
         BnfCom bool = rule().bool(BoolLiteral.class);
 
-        BnfCom primary = rule(AstPrimary.class).or(
+        BnfCom primary = wrapper().or(
                 number,
                 string,
                 bool
         );
 
-        BnfCom primary2 = rule(AstPrimary.class).or(
+        BnfCom primary2 = wrapper().or(
                 number,
                 string,
                 bool

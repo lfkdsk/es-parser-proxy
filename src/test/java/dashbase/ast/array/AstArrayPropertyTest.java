@@ -6,7 +6,7 @@ import dashbase.ast.AstQueryProgram;
 import dashbase.ast.literal.NumberLiteral;
 import dashbase.ast.object.AstObject;
 import dashbase.ast.primary.AstPrimaryProperty;
-import dashbase.ast.property.AstProperty;
+import dashbase.ast.property.Property;
 import dashbase.ast.value.AstValueList;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,7 +39,7 @@ public class AstArrayPropertyTest {
         AstQueryProgram nodes = runGrammar(program.toString());
 
         Assert.assertNotNull(nodes);
-        Assert.assertEquals(nodes.object().property("lfkdsk").type(), AstProperty.PropertyType.ARRAY);
+        Assert.assertEquals(nodes.object().property("lfkdsk").type(), Property.PropertyType.ARRAY);
         Assert.assertEquals(nodes.object().propertyList().childCount(), 2);
 
         AstArrayProperty astArrayProperty = (AstArrayProperty) nodes.object().property("lfkdsk");
@@ -57,7 +57,7 @@ public class AstArrayPropertyTest {
 
         List<AstObject> objects = astObjectArray.list().toObjects();
         Assert.assertEquals(objects.size(), 2);
-        Assert.assertEquals(objects.get(1).property("lfkdsk").type(), AstProperty.PropertyType.PRIMARY);
+        Assert.assertEquals(objects.get(1).property("lfkdsk").type(), Property.PropertyType.PRIMARY);
 
         AstPrimaryProperty property = (AstPrimaryProperty) objects.get(1).property("lfkdsk");
 

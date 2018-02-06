@@ -34,7 +34,7 @@ public class BoolToken extends ReservedToken {
     }
 
     /**
-     * Judge token => Boolean Value
+     * Judge token to Boolean Value
      *
      * @param token tokenString
      * @return BooleanEnum

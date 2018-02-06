@@ -17,11 +17,8 @@ import java.util.List;
  * @see dashbase.ast.object.AstObjectProperty
  * @see dashbase.ast.array.AstArrayProperty
  */
+@Deprecated
 public class AstProperty extends QueryAstList {
-
-    public enum PropertyType {
-        PRIMARY, OBJECT, ARRAY, ALL
-    }
 
     public AstProperty(List<AstNode> children) {
         super(children, Tokens.PROPERTY);
@@ -29,26 +26,6 @@ public class AstProperty extends QueryAstList {
 
     public Property property() {
         return (Property) child(0);
-    }
-
-    public PropertyType type() {
-        int tag = property().getTag();
-
-        switch (tag) {
-            case Tokens.AST_PRIMARY_PROPERTY: {
-                return PropertyType.PRIMARY;
-            }
-            case Tokens.AST_ARRAY_PROPERTY: {
-                return PropertyType.ARRAY;
-            }
-            default:
-            case Tokens.AST_OBJECT_PROPERTY: {
-                return PropertyType.OBJECT;
-            }
-            case Tokens.AST_ALL_PROPERTY: {
-                return PropertyType.ALL;
-            }
-        }
     }
 
     @Override

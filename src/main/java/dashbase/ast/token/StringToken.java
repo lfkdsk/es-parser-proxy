@@ -5,7 +5,7 @@ import bnfgenast.ast.token.Token;
 
 /**
  * String Token.
- * used in lexer => will be add to spec Literal.
+ * used in lexer to will be add to spec Literal.
  *
  * @author liufengkai
  *         Created by liufengkai on 2017/7/24.
