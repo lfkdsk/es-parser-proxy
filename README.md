@@ -1,4 +1,4 @@
-# EtD Proxy Demo
+# EtD Proxy FrameWork
 
 ![es-db](art/es-ast-db.png)
 
